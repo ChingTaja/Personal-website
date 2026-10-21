@@ -1,0 +1,59 @@
+import { marked } from 'marked'
+
+export type Post = {
+  slug: string
+  title: string
+  date: string
+  category: string
+  author: string
+  color: string
+  html: string
+}
+
+// 解析檔案開頭 --- ... --- 的 front matter
+function parse(slug: string, raw: string): Post {
+  const m = raw.replace(/\r\n/g, '\n').match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/)
+  const meta: Record<string, string> = {}
+  const body = m ? m[2] : raw
+  if (m) {
+    for (const line of m[1].split('\n')) {
+      const i = line.indexOf(':')
+      if (i > 0) meta[line.slice(0, i).trim()] = line.slice(i + 1).trim()
+    }
+  }
+  return {
+    slug,
+    title: meta.title ?? slug,
+    date: meta.date ?? '',
+    category: meta.category ?? '未分類',
+    author: meta.author ?? '',
+    color: meta.color ?? '',
+    html: marked.parse(body, { async: false }),
+  }
+}
+
+// 日期新到舊
+function collect(files: Record<string, string>): Post[] {
+  return Object.entries(files)
+    .map(([path, raw]) => parse(path.replace(/^.*\/|\.md$/g, ''), raw))
+    .sort((a, b) => b.date.localeCompare(a.date))
+}
+
+export type Kind = 'posts' | 'books'
+
+export const collections: Record<Kind, { title: string; desc: string; items: Post[] }> = {
+  posts: {
+    title: '📝 文章',
+    desc: '慢慢寫、慢慢累積的小筆記。',
+    items: collect(
+      import.meta.glob('./posts/*.md', { query: '?raw', import: 'default', eager: true }) as Record<string, string>,
+    ),
+  },
+  books: {
+    title: '📖 讀書筆記',
+    desc: '全部的讀書筆記，用分類 tab 切換。',
+    items: collect(
+      import.meta.glob('./books/*.md', { query: '?raw', import: 'default', eager: true }) as Record<string, string>,
+    ),
+  },
+}
