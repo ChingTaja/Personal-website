@@ -10,6 +10,17 @@ export type Post = {
   html: string;
 };
 
+const renderer = new marked.Renderer();
+renderer.link = function ({ href, title, tokens }) {
+  const escapeAttribute = (value: string) => value
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+  const external = /^https?:\/\//i.test(href);
+  return `<a href="${escapeAttribute(href)}"${title ? ` title="${escapeAttribute(title)}"` : ''}${external ? ' target="_blank" rel="noopener noreferrer"' : ''}>${this.parser.parseInline(tokens)}</a>`;
+};
+
 // 解析檔案開頭 --- ... --- 的 front matter
 function parse(slug: string, raw: string): Post {
   const m = raw.replace(/\r\n/g, '\n').match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
@@ -28,7 +39,7 @@ function parse(slug: string, raw: string): Post {
     category: meta.category ?? '未分類',
     author: meta.author ?? '',
     color: meta.color ?? '',
-    html: marked.parse(body, { async: false }),
+    html: marked.parse(body, { async: false, renderer }),
   };
 }
 
