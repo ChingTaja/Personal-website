@@ -1,7 +1,7 @@
 .page {
-  max-width: 1100px;
+  max-width: 1020px;
   margin: 0 auto;
-  padding: 28px 24px 64px;
+  padding: 28px 40px 64px;
 }
 
 /* nav */
@@ -41,7 +41,10 @@
   border: 2px solid var(--line);
   border-radius: 999px;
   box-shadow: 3px 3px 0 var(--line);
-  transition: transform 0.12s, box-shadow 0.12s, background 0.12s;
+  transition:
+    transform 0.12s,
+    box-shadow 0.12s,
+    background 0.12s;
 }
 
 .nav a:hover {
@@ -118,7 +121,9 @@
   box-shadow: 4px 4px 0 var(--line);
   text-decoration: none;
   cursor: pointer;
-  transition: transform 0.12s, box-shadow 0.12s;
+  transition:
+    transform 0.12s,
+    box-shadow 0.12s;
 }
 
 .btn:hover {
@@ -227,6 +232,9 @@ footer {
 }
 
 @media (max-width: 640px) {
+  .page {
+    padding-inline: 24px;
+  }
   .nav {
     margin-bottom: 40px;
   }
@@ -252,6 +260,79 @@ footer {
   margin: 0 0 32px;
   color: var(--muted);
   font-size: 18px;
+}
+
+.note-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 22px;
+  margin-top: 24px;
+}
+
+.note-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 220px;
+  padding: 22px 18px 16px;
+  color: inherit;
+  text-decoration: none;
+  background: linear-gradient(180deg, #fffbe8 0%, #f5efc7 100%);
+  border: 2px solid var(--line);
+  border-radius: 18px;
+  box-shadow: 5px 5px 0 var(--line);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.note-card:nth-child(odd) {
+  transform: rotate(-1.1deg);
+}
+
+.note-card:nth-child(even) {
+  transform: rotate(1.2deg);
+}
+
+.note-card:hover {
+  transform: rotate(0deg) translateY(-4px);
+  box-shadow: 6px 6px 0 var(--line);
+}
+
+.note-pin {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  width: 18px;
+  height: 18px;
+  background: #f3ca86;
+  border: 2px solid var(--line);
+  border-radius: 50%;
+  transform: translateX(-50%) rotate(10deg);
+}
+
+.note-meta {
+  margin: 0 0 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.note-card h3 {
+  margin: 0 0 12px;
+  font-size: 22px;
+  line-height: 1.3;
+}
+
+.note-preview {
+  margin: 0;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.7;
 }
 
 .back {
@@ -507,7 +588,6 @@ a.card {
   background: var(--accent-2);
 }
 
-
 .tab-count {
   margin-left: 8px;
   padding: 0 7px;
@@ -572,4 +652,38 @@ a.card {
 
 .tab-arrow.right {
   right: 0;
+}
+
+/* 學習資源的小類別與收藏註解 */
+.resource-index {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 0 0 36px;
+}
+.resource-index a { text-decoration: none; }
+.resource-total { font-size: 13px; font-weight: 400; color: var(--muted); }
+.resource-group { margin-top: 40px; scroll-margin-top: 24px; }
+.resource-heading { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; font-size: 22px; }
+.resource-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr)); gap: 22px; }
+.resource-grid > li { min-width: 0; display: flex; }
+.resource-grid .card { flex: 1; overflow-wrap: anywhere; }
+.card .resource-note { margin-top: 12px; font-size: 13px; color: var(--ink); }
+.resource-index a:focus-visible, .resource-grid a:focus-visible { outline: 3px solid var(--ink); outline-offset: 5px; }
+
+.btn.resource-toggle {
+  display: block;
+  width: fit-content;
+  margin: 18px auto 0;
+  padding: 5px 12px;
+  font-size: 13px;
+  border-radius: 8px;
+  box-shadow: 3px 3px 0 var(--line);
+}
+.btn.resource-toggle:hover {
+  box-shadow: 1px 1px 0 var(--line);
+}
+.resource-toggle:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
 }
