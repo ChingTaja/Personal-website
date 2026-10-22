@@ -30,7 +30,8 @@ const bookHeadingStyles: Record<string, string> = {
 renderer.heading = function ({ tokens, depth, text }) {
   const content = this.parser.parseInline(tokens);
   const style = depth === 2 ? bookHeadingStyles[text.trim()] : undefined;
-  return `<h${depth}>${style ? `<span class="book-highlight book-highlight-${style}">${content}</span>` : content}</h${depth}>\n`;
+  const readingDate = style === 'summary' ? '<span class="book-reading-date">閱讀日期：太久遠不可考</span>' : '';
+  return `<h${depth}${style === 'summary' ? ' class="book-summary-heading"' : ''}>${style ? `<span class="book-highlight book-highlight-${style}">${content}</span>` : content}${readingDate}</h${depth}>\n`;
 };
 
 // 解析檔案開頭 --- ... --- 的 front matter

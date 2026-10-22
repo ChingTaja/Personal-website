@@ -499,7 +499,9 @@ a.card {
   align-items: flex-end;
   gap: 6px;
   min-height: 290px;
-  padding: 0 18px;
+  padding: 26px 18px 0;
+  width: max-content;
+  min-width: 100%;
 }
 
 .shelf-board {
@@ -513,6 +515,7 @@ a.card {
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  flex: none;
   width: var(--w);
   height: var(--h);
   padding: 30px 0 12px;
@@ -547,7 +550,7 @@ a.card {
 }
 
 .shelf-hint {
-  margin: 18px 0 0;
+  margin: 0;
   color: var(--muted);
   font-size: 14px;
 }
@@ -713,4 +716,44 @@ a.card {
   margin: 0 8px 0 -24px;
   vertical-align: -2px;
   accent-color: var(--ink);
+}
+
+.shelf-toolbar {
+  max-width: 760px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.shelf-controls { display: flex; gap: 8px; }
+.shelf-controls button {
+  width: 34px;
+  height: 32px;
+  font: inherit;
+  color: var(--ink);
+  background: var(--accent-2);
+  border: 2px solid var(--line);
+  border-radius: 8px;
+  cursor: pointer;
+}
+.shelf-controls button:disabled { opacity: 0.35; cursor: default; }
+.shelf-viewport { overflow-x: auto; cursor: grab; scrollbar-width: thin; }
+.shelf-viewport.dragging { cursor: grabbing; user-select: none; }
+.shelf-viewport:focus-visible { outline: 2px solid var(--ink); outline-offset: -3px; }
+
+.book-reading-date { display: none; }
+.book-prose .book-summary-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+}
+.book-prose .book-reading-date {
+  display: inline;
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 400;
 }
