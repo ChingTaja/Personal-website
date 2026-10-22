@@ -79,16 +79,35 @@ const japaneseGroups: NonNullable<ResourceCategory['groups']> = [
   ] },
 ]
 
+const englishGroups: NonNullable<ResourceCategory['groups']> = [
+  { id: "toeic", title: "📝 多益", links: [
+    {"title": "巨匠｜英文線上測驗", "url": "https://www.soeasyedu.com.tw/english-exam", "desc": "可用線上測驗檢視目前程度，找出多益練習時需要加強的題型。"},
+    {"title": "免費多益線上模擬測驗資源整理", "url": "https://cln-asia.com/【2025-持續更新】10-個免費多益線上模擬測驗網站資源/", "desc": "集中收藏模擬測驗網站，方便挑選題目練習並安排考前複習。"},
+  ] },
+  { id: "reading", title: "📖 Reading｜閱讀", links: [
+    {"title": "常春藤／空中英語｜線上閱讀", "url": "https://tpml.ebook.hyread.com.tw/Template/RWD3.0/magazine_more.jsp?jid=213", "desc": "把英文雜誌納入固定閱讀習慣，從不同主題累積單字與句型。"},
+    {"title": "DMM Daily News｜簡單有趣文章", "url": "https://eikaiwa.dmm.com/app/daily-news", "desc": "挑感興趣的短文閱讀，再練習用英文摘要或回答問題。"},
+    {"title": "News for Kids", "url": "https://newsforkids.net/articles/2025/09/16/nepal-protests-bring-new-leader-brazils-bolsonaro-found-guilty/", "desc": "從較容易切入的新聞文章開始，練習掌握事件重點與新聞詞彙。"},
+  ] },
+  { id: "intensive-listening", title: "🎯 Listening｜精聽", links: [
+    {"title": "VoiceTube", "url": "https://tw.voicetube.com/definition/baggage%20carousel/videos", "desc": "挑一小段反覆聽寫與跟讀，找出連音、發音和生字造成的理解落差。"},
+  ] },
+  { id: "extensive-listening", title: "🎧 Listening｜泛聽", links: [
+    {"title": "The Indicator from Planet Money", "url": "https://podcasts.apple.com/tw/podcast/the-indicator-from-planet-money/id1320118593", "desc": "透過經濟現象與商業議題練習掌握大意，同時累積工作與財經相關詞彙。"},
+    {"title": "Speak English With Class", "url": "https://www.youtube.com/watch?v=0Okxsszt624", "desc": "先聽懂整體內容，再挑幾句喜歡的表達練習模仿。"},
+    {"title": "短時間故事", "url": "https://www.youtube.com/watch?v=7mGFveB9PCs", "desc": "利用故事情節推敲意思，讓短時間聆聽也能累積語感。"},
+    {"title": "Learn English with Rebecca · engVid", "url": "https://www.youtube.com/watch?v=qv7mop1l7mw", "desc": "可邊聽英文講解邊整理實用說法，練習跟上完整的說明內容。"},
+  ] },
+]
+
 export const categories: ResourceCategory[] = [
   {
     id: 'english',
     emoji: '🔤',
     title: '英文學習',
-    desc: '單字、聽力、文法與練習工具。',
-    links: [
-      { title: 'BBC Learning English', url: 'https://www.bbc.co.uk/learningenglish', desc: '免費的聽力與文法課程。' },
-      { title: 'Cambridge Dictionary', url: 'https://dictionary.cambridge.org/', desc: '查單字、例句與發音。' },
-    ],
+    desc: '從多益準備、閱讀到精聽與泛聽，依照今天想練習的方向挑一個資源。',
+    links: englishGroups.flatMap((group) => group.links),
+    groups: englishGroups,
   },
   {
     id: 'japanese',

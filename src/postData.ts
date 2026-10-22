@@ -21,6 +21,18 @@ renderer.link = function ({ href, title, tokens }) {
   return `<a href="${escapeAttribute(href)}"${title ? ` title="${escapeAttribute(title)}"` : ''}${external ? ' target="_blank" rel="noopener noreferrer"' : ''}>${this.parser.parseInline(tokens)}</a>`;
 };
 
+const bookHeadingStyles: Record<string, string> = {
+  '摘要': 'summary',
+  '喜歡的句子': 'quotes',
+  '我的想法': 'thoughts',
+  '後續行動': 'actions',
+};
+renderer.heading = function ({ tokens, depth, text }) {
+  const content = this.parser.parseInline(tokens);
+  const style = depth === 2 ? bookHeadingStyles[text.trim()] : undefined;
+  return `<h${depth}>${style ? `<span class="book-highlight book-highlight-${style}">${content}</span>` : content}</h${depth}>\n`;
+};
+
 // 解析檔案開頭 --- ... --- 的 front matter
 function parse(slug: string, raw: string): Post {
   const m = raw.replace(/\r\n/g, '\n').match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);

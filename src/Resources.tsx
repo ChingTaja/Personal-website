@@ -75,7 +75,7 @@ export default function Resources({ categoryId }: { categoryId?: string }) {
         <h1 className="page-title">{category.emoji} {category.title}</h1>
         <p className="page-desc">{category.desc}</p>
         {category.groups && (
-          <nav className="resource-index" aria-label="日文學習小類別">
+          <nav className="resource-index" aria-label={`${category.title}小類別`}>
             {groups.map((group) => (
               <a className="filter" key={group.id} href={`#resource-${group.id}`} onClick={(event) => {
                 event.preventDefault()

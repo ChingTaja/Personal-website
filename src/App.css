@@ -687,3 +687,30 @@ a.card {
   outline: 2px solid var(--ink);
   outline-offset: 3px;
 }
+
+/* 讀書筆記：文字下方的柔和螢光筆筆觸 */
+.book-prose .book-highlight {
+  --highlight: #ffe08a;
+  padding: 0 0.18em 0.05em;
+  color: var(--ink);
+  background: linear-gradient(178deg, transparent 36%, var(--highlight) 39%, var(--highlight) 88%, transparent 92%);
+  border-radius: 0.2em 0.12em 0.24em 0.1em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+.book-prose .book-highlight-quotes { --highlight: #b8e0d2; }
+.book-prose .book-highlight-thoughts { --highlight: #ffd0c4; }
+.book-prose .book-highlight-actions { --highlight: #cbdfea; }
+
+.book-prose li:has(> input[type="checkbox"]),
+.book-prose li:has(> p > input[type="checkbox"]) {
+  list-style: none;
+  margin-block: 12px;
+}
+.book-prose input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  margin: 0 8px 0 -24px;
+  vertical-align: -2px;
+  accent-color: var(--ink);
+}

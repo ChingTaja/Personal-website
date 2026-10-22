@@ -176,7 +176,7 @@ export default function Posts({ kind, slug }: { kind: Kind; slug?: string }) {
           {post.author && <span className="chip">{post.author}</span>}
           {post.category !== '未分類' && <span className="chip">{post.category}</span>} {post.date}
         </p>
-        <article className="prose" dangerouslySetInnerHTML={{ __html: post.html }} />
+        <article className={`prose${kind === 'books' ? ' book-prose' : ''}`} dangerouslySetInnerHTML={{ __html: post.html }} />
       </>
     );
   }
