@@ -15,11 +15,13 @@ function TabScroller({ children }: { children: ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
   const [canLeft, setCanLeft] = useState(false);
   const [canRight, setCanRight] = useState(false);
+  const [overflowing, setOverflowing] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
     const update = () => {
+      setOverflowing(el.scrollWidth > el.clientWidth + 1);
       setCanLeft(el.scrollLeft > 1);
       setCanRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 1);
     };
@@ -27,27 +29,28 @@ function TabScroller({ children }: { children: ReactNode }) {
     el.addEventListener('scroll', update, { passive: true });
     const ro = new ResizeObserver(update);
     ro.observe(el);
+    Array.from(el.children).forEach((tab) => ro.observe(tab));
     return () => {
       el.removeEventListener('scroll', update);
       ro.disconnect();
     };
-  }, []);
+  }, [children]);
 
   const scroll = (dir: number) =>
     ref.current?.scrollBy({ left: dir * ref.current.clientWidth * 0.7, behavior: 'smooth' });
 
   return (
-    <div className="tabs-wrap">
-      {canLeft && (
-        <button type="button" className="tab-arrow left" aria-label="往左" onClick={() => scroll(-1)}>
+    <div className={`tabs-wrap${overflowing ? ' tabs-overflow' : ''}`}>
+      {overflowing && (
+        <button type="button" disabled={!canLeft} className="tab-arrow left" aria-label="往左" onClick={() => scroll(-1)}>
           ‹
         </button>
       )}
       <div className="tabs" role="tablist" ref={ref}>
         {children}
       </div>
-      {canRight && (
-        <button type="button" className="tab-arrow right" aria-label="往右" onClick={() => scroll(1)}>
+      {overflowing && (
+        <button type="button" disabled={!canRight} className="tab-arrow right" aria-label="往右" onClick={() => scroll(1)}>
           ›
         </button>
       )}
@@ -63,8 +66,9 @@ function Filters({ children }: { children: ReactNode }) {
 export function PostList({ kind, full = false }: { kind: Kind; full?: boolean }) {
   const [category, setCategory] = useState('全部');
   const items = collections[kind].items;
-  const categories = [...new Set(items.map((p) => p.category))];
-  const shown = category === '全部' ? items : items.filter((p) => p.category === category);
+  const getCategory = (post: (typeof items)[number]) => kind === 'notes' ? post.topic : post.category;
+  const categories = [...new Set(items.map(getCategory))];
+  const shown = category === '全部' ? items : items.filter((p) => getCategory(p) === category);
   const asTabs = kind === 'books' && full;
 
   if (kind === 'books' && !full) return <Shelf books={items} />;
@@ -79,6 +83,7 @@ export function PostList({ kind, full = false }: { kind: Kind; full?: boolean })
                 key={c}
                 type="button"
                 className={`filter${c === category ? ' active' : ''}`}
+                aria-pressed={c === category}
                 onClick={() => setCategory(c)}
               >
                 {c}
@@ -96,8 +101,10 @@ export function PostList({ kind, full = false }: { kind: Kind; full?: boolean })
                 <span className="note-pin" />
                 <p className="note-meta">
                   <span className="chip">{p.category}</span>
+                  {p.author && <span className="chip">{p.author}</span>}
                   {p.date}
                 </p>
+                <p className="note-topic">{p.topic}</p>
                 <h3>{p.title}</h3>
                 <p className="note-preview">{short}</p>
               </a>
@@ -160,16 +167,16 @@ export default function Posts({ kind, slug }: { kind: Kind; slug?: string }) {
       return (
         <>
           <p>找不到這篇 🙈</p>
-          <a className="btn" href="#/">
-            回首頁
+          <a className="btn" href={kind === 'books' ? '#/books' : kind === 'notes' ? '#/notes' : '#/'}>
+            {kind === 'books' ? '回讀書筆記' : kind === 'notes' ? '回隨手記' : '回首頁'}
           </a>
         </>
       );
     }
     return (
       <>
-        <a className="back" href="#/">
-          ← 回首頁
+        <a className="back" href={kind === 'books' ? '#/books' : kind === 'notes' ? '#/notes' : '#/'}>
+          {kind === 'books' ? '← 回讀書筆記' : kind === 'notes' ? '← 回隨手記' : '← 回首頁'}
         </a>
         <h1 className="page-title">{post.title}</h1>
         <p className="post-meta">

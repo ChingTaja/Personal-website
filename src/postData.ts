@@ -5,6 +5,7 @@ export type Post = {
   title: string;
   date: string;
   category: string;
+  topic: string;
   author: string;
   color: string;
   html: string;
@@ -50,9 +51,13 @@ function parse(slug: string, raw: string): Post {
     title: meta.title ?? slug,
     date: meta.date ?? '',
     category: meta.category ?? '未分類',
+    topic: meta.topic ?? '未分類',
     author: meta.author ?? '',
     color: meta.color ?? '',
-    html: marked.parse(body, { async: false, renderer }),
+    html: marked.parse(body, { async: false, renderer }).replace(
+      '<span class="book-reading-date">閱讀日期：太久遠不可考</span>',
+      `<span class="book-reading-date">閱讀日期：${/^\d{4}\/\d{2}\/\d{2}$/.test(meta.readingDate ?? '') ? meta.readingDate : '太久遠不可考'}</span>`
+    ),
   };
 }
 

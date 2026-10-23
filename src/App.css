@@ -481,74 +481,100 @@ a.card {
   max-width: 100%;
 }
 
-/* 書櫃 */
+/* 書櫃：淺木層板與布面精裝書 */
 .shelf-case {
   max-width: 760px;
-  padding: 0 0 0;
   overflow: hidden;
-  background: #f7ead0;
-  border: 12px solid #e8cba2;
-  border-radius: 14px;
-  outline: 2px solid var(--line);
-  outline-offset: 0;
-  box-shadow: 4px 4px 0 var(--line);
+  background: linear-gradient(180deg, #eee8dd, #f6f1e8 45%, #e9e0d2);
+  border: 1px solid #c9bba7;
+  border-radius: 5px;
+  box-shadow: inset 0 6px 18px #67533b0d, 0 12px 24px #53452d0c;
 }
 
 .shelf-row {
   display: flex;
   align-items: flex-end;
-  gap: 6px;
-  min-height: 290px;
-  padding: 26px 18px 0;
+  gap: 5px;
+  min-height: 340px;
+  padding: 30px 26px 0;
   width: max-content;
   min-width: 100%;
 }
 
 .shelf-board {
-  height: 16px;
-  background: #e8cba2;
-  border-top: 2px solid var(--line);
+  height: 18px;
+  background: linear-gradient(180deg, #e1caae, #cdb18c 35%, #ddc4a3 40%, #d7bd99);
+  border-top: 1px solid #bda17c;
+  box-shadow: 0 -3px 7px #5c48381a;
 }
 
 .spine {
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
   flex: none;
   width: var(--w);
   height: var(--h);
-  padding: 30px 0 12px;
-  overflow: hidden;
-  white-space: nowrap;
-  writing-mode: vertical-rl;
-  color: var(--ink);
-  font-size: 15px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
+  padding: 30px 10px 38px;
+  color: #344039;
+  font-size: 14px;
+  font-weight: 600;
   text-decoration: none;
-  background: var(--c);
-  border: 2px solid var(--line);
+  background:
+    linear-gradient(90deg, #00000018, #ffffff40 7%, transparent 16%, transparent 78%, #00000012 94%, #ffffff30),
+    repeating-linear-gradient(0deg, #ffffff0a 0 1px, transparent 1px 3px),
+    var(--c);
+  border: 1px solid #4b493329;
   border-bottom: 0;
-  border-radius: 6px 6px 0 0;
+  border-radius: 3px 5px 0 0;
+  box-shadow: 2px 0 3px #45372320, inset 0 1px #ffffff70;
   transform-origin: bottom center;
-  transition: transform 0.18s;
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
 }
 
-.spine::before {
+.spine-title {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  line-height: 1.7;
+  letter-spacing: 0.12em;
+  max-height: 100%;
+  overflow-wrap: anywhere;
+  margin: 0 auto;
+  font-family: 'Noto Serif TC', 'Songti TC', 'PMingLiU', serif;
+}
+
+.spine::before,
+.spine::after {
   content: '';
   position: absolute;
-  top: 9px;
+  left: 12px;
+  right: 12px;
+  height: 3px;
+  border-block: 1px solid #4a51402e;
+}
+.spine::before { top: 15px; }
+.spine::after { bottom: 29px; }
+.spine-number {
+  position: absolute;
+  bottom: 9px;
   left: 0;
   right: 0;
-  height: 8px;
-  border-block: 2px solid var(--line);
+  text-align: center;
+  font-family: Georgia, serif;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  opacity: 0.65;
 }
-
-.spine:hover {
-  transform: translateY(-18px) rotate(-3deg);
+.spine:hover,
+.spine:focus-visible {
+  transform: translateY(-12px);
+  box-shadow: 4px 5px 10px #45372326, inset 0 1px #ffffff70;
 }
-
+.spine:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) {
+  .spine { transition: none; }
+  .spine:hover, .spine:focus-visible { transform: none; }
+}
 .shelf-hint {
   margin: 0;
   color: var(--muted);
@@ -732,9 +758,9 @@ a.card {
   height: 32px;
   font: inherit;
   color: var(--ink);
-  background: var(--accent-2);
-  border: 2px solid var(--line);
-  border-radius: 8px;
+  background: #f3ede2;
+  border: 1px solid #c9bba7;
+  border-radius: 50%;
   cursor: pointer;
 }
 .shelf-controls button:disabled { opacity: 0.35; cursor: default; }
@@ -756,4 +782,17 @@ a.card {
   color: var(--muted);
   font-size: 13px;
   font-weight: 400;
+}
+
+/* 分類超出寬度時，保留兩側箭頭空間，避免遮住分頁 */
+.tabs-wrap { min-width: 0; max-width: 100%; }
+.tabs-wrap.tabs-overflow { padding-inline: 42px; }
+.tabs-wrap .tabs { padding-inline: 12px; }
+.tab-arrow:disabled { opacity: 0.35; cursor: default; }
+
+.note-topic {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
 }

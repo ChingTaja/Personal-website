@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import type { Post } from './postData'
 
-const palette = ['#ffb4a2', '#ffe08a', '#b8e0d2', '#b7d4f0', '#d9c2f0', '#f6c28b']
+const palette = ['#c6d3c5', '#e4d5b7', '#ccd6df', '#d9beb3', '#d1c8da', '#d6d2bf']
 
 // 用 slug 算出固定的高度與寬度，每次重新整理書櫃都長一樣
 function hash(s: string) {
@@ -13,14 +13,15 @@ function hash(s: string) {
 function Spine({ book, index }: { book: Post; index: number }) {
   const h = hash(book.slug)
   const style = {
-    '--h': `${Math.max(200 + (h % 6) * 16, 56 + [...book.title].length * 17)}px`,
-    '--w': `${Math.min(76, 54 + ((h >> 3) % 4) * 8)}px`,
+    '--h': `${250 + (h % 5) * 12}px`,
+    '--w': `${60 + ((h >> 3) % 3) * 8}px`,
     '--c': book.color || palette[index % palette.length],
   } as CSSProperties
 
   return (
     <a className="spine" style={style} href={`#/books/${book.slug}`} title={book.title}>
-      <span>{book.title}</span>
+      <span className="spine-title">{book.title}</span>
+      <span className="spine-number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
     </a>
   )
 }
