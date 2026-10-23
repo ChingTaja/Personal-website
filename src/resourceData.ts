@@ -1,3 +1,4 @@
+import { translate, type Locale } from './i18n'
 export type ResourceLink = { title: string; url?: string; desc: string; note?: string }
 
 export type ResourceCategory = {
@@ -118,3 +119,19 @@ export const categories: ResourceCategory[] = [
     groups: japaneseGroups,
   },
 ]
+
+export function getResourceCategories(locale: Locale): ResourceCategory[] {
+  const localizeLink = (link: ResourceLink): ResourceLink => ({
+    ...link,
+    title: translate(link.title, locale),
+    desc: translate(link.desc, locale),
+    note: link.note ? translate(link.note, locale) : undefined,
+  });
+  return categories.map((category) => ({
+    ...category,
+    title: translate(category.title, locale),
+    desc: translate(category.desc, locale),
+    links: category.links.map(localizeLink),
+    groups: category.groups?.map((group) => ({ ...group, title: translate(group.title, locale), links: group.links.map(localizeLink) })),
+  }));
+}

@@ -7,8 +7,6 @@ topic: 健身訓練
 author: 林勁瑋 x 大腦優先教練學院
 ---
 
-## 重點
-
 以下整理影片中提到的 NSCA《Essentials of Strength Training and Conditioning》改版內容，以及與前一版增肌建議的差異
 
 ### 1. Rest between sets｜組間休息

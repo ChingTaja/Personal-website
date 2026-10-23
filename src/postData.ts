@@ -1,12 +1,17 @@
+import { translate, type Locale } from './i18n'
 import { marked } from 'marked';
 
 export type Post = {
   slug: string;
   title: string;
+  originalTitle: string;
   date: string;
   category: string;
   topic: string;
   sourceUrl: string;
+  seriesId: string;
+  authorUrl: string;
+  status: string;
   author: string;
   color: string;
   html: string;
@@ -28,6 +33,10 @@ const bookHeadingStyles: Record<string, string> = {
   '喜歡的句子': 'quotes',
   '我的想法': 'thoughts',
   '後續行動': 'actions',
+  'Summary': 'summary',
+  'Favorite Quotes': 'quotes',
+  'My Thoughts': 'thoughts',
+  'Next Steps': 'actions',
 };
 renderer.heading = function ({ tokens, depth, text }) {
   const content = this.parser.parseInline(tokens);
@@ -50,10 +59,14 @@ function parse(slug: string, raw: string): Post {
   return {
     slug,
     title: meta.title ?? slug,
+    originalTitle: meta.title ?? slug,
     date: meta.date ?? '',
     category: meta.category ?? '未分類',
     topic: meta.topic ?? '未分類',
     sourceUrl: /^https?:\/\//i.test(meta.sourceUrl ?? '') ? meta.sourceUrl : '',
+    seriesId: meta.seriesId ?? '',
+    authorUrl: /^https?:\/\//i.test(meta.authorUrl ?? '') ? meta.authorUrl : '',
+    status: meta.status ?? '',
     author: meta.author ?? '',
     color: meta.color ?? '',
     html: marked.parse(body, { async: false, renderer }).replace(
@@ -95,3 +108,41 @@ export const collections: Record<Kind, { title: string; desc: string; items: Pos
     ),
   },
 };
+
+const englishFiles = import.meta.glob('./locales/en/{books,notes,posts}/*.md', { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
+const englishCollections = Object.fromEntries(
+  Object.entries(collections).map(([kind, collection]) => [kind, {
+    ...collection,
+    items: collection.items.map((original) => {
+      const raw = englishFiles[`./locales/en/${kind}/${original.slug}.md`];
+      if (!raw) return original;
+      const translated = parse(original.slug, raw);
+      return {
+        ...original,
+        title: translated.title,
+        html: translated.html.replace(/<span class="book-reading-date">[\s\S]*?<\/span>/, original.html.match(/<span class="book-reading-date">[\s\S]*?<\/span>/)?.[0] ?? '').replace('閱讀日期：', 'Read: ').replace('太久遠不可考', 'Too long ago to remember'),
+      };
+    }),
+  }])
+) as typeof collections;
+export function getCollections(locale: Locale) {
+  const selected = locale === 'en' ? englishCollections : collections;
+  return Object.fromEntries(Object.entries(selected).map(([kind, collection]) => [kind, {
+    ...collection, title: translate(collection.title, locale), desc: translate(collection.desc, locale),
+  }])) as typeof collections;
+}
+
+const seriesFiles = import.meta.glob('./series/*/*.md', { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
+const englishSeriesFiles = import.meta.glob('./locales/en/series/*/*.md', { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
+export function getSeriesEpisodes(seriesId: string, locale: Locale): Post[] {
+  return Object.entries(seriesFiles)
+    .filter(([path]) => path.startsWith(`./series/${seriesId}/`))
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([path, raw]) => {
+      const original = parse(path.replace(/^.*\/|\.md$/g, ''), raw);
+      const englishRaw = englishSeriesFiles[path.replace('./series/', './locales/en/series/')];
+      if (locale !== 'en' || !englishRaw) return original;
+      const translated = parse(original.slug, englishRaw);
+      return { ...original, title: translated.title, html: translated.html };
+    });
+}

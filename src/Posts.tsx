@@ -1,6 +1,8 @@
+import { useLanguage } from './i18n'
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import Shelf from './Shelf';
-import { collections, type Kind } from './postData';
+import SeriesNotes from './SeriesNotes';
+import { getCollections, getSeriesEpisodes, type Kind } from './postData';
 
 const bookCategoryColors: Record<string, string> = {
   '全部': '#e5e8ec',
@@ -30,6 +32,7 @@ function stripHtml(raw: string) {
 
 // tab 太多時單行橫向捲動，兩側出現箭頭
 function TabScroller({ children }: { children: ReactNode }) {
+  const { t } = useLanguage();
   const ref = useRef<HTMLDivElement>(null);
   const [canLeft, setCanLeft] = useState(false);
   const [canRight, setCanRight] = useState(false);
@@ -60,7 +63,7 @@ function TabScroller({ children }: { children: ReactNode }) {
   return (
     <div className={`tabs-wrap${overflowing ? ' tabs-overflow' : ''}`}>
       {overflowing && (
-        <button type="button" disabled={!canLeft} className="tab-arrow left" aria-label="往左" onClick={() => scroll(-1)}>
+        <button type="button" disabled={!canLeft} className="tab-arrow left" aria-label={t("往左")} onClick={() => scroll(-1)}>
           ‹
         </button>
       )}
@@ -68,7 +71,7 @@ function TabScroller({ children }: { children: ReactNode }) {
         {children}
       </div>
       {overflowing && (
-        <button type="button" disabled={!canRight} className="tab-arrow right" aria-label="往右" onClick={() => scroll(1)}>
+        <button type="button" disabled={!canRight} className="tab-arrow right" aria-label={t("往右")} onClick={() => scroll(1)}>
           ›
         </button>
       )}
@@ -82,14 +85,15 @@ function Filters({ children }: { children: ReactNode }) {
 
 // full：整頁列表。讀書筆記在首頁是書櫃，整頁則是「全部 + 分類」tab 與所有筆記
 export function PostList({ kind, full = false, query = '' }: { kind: Kind; full?: boolean; query?: string }) {
+  const { t, locale } = useLanguage();
   const [category, setCategory] = useState('全部');
-  const items = collections[kind].items;
+  const items = getCollections(locale)[kind].items;
   const getCategory = (post: (typeof items)[number]) => kind === 'notes' ? post.topic : post.category;
   const categories = [...new Set(items.map(getCategory))];
   const search = query.trim().toLocaleLowerCase();
   const shown = items.filter((post) =>
     (category === '全部' || getCategory(post) === category) &&
-    (!search || `${post.title} ${post.author}`.toLocaleLowerCase().includes(search))
+    (!search || `${post.title} ${post.originalTitle} ${post.author}`.toLocaleLowerCase().includes(search))
   );
   const asTabs = kind === 'books' && full;
 
@@ -102,13 +106,13 @@ export function PostList({ kind, full = false, query = '' }: { kind: Kind; full?
           <Filters>
             {['全部', ...categories].map((c) => (
               <button
-                key={c}
+                key={t(c)}
                 type="button"
                 className={`filter${c === category ? ' active' : ''}`}
                 aria-pressed={c === category}
                 onClick={() => setCategory(c)}
               >
-                {c}
+                {t(c)}
               </button>
             ))}
           </Filters>
@@ -119,18 +123,19 @@ export function PostList({ kind, full = false, query = '' }: { kind: Kind; full?
             const short = preview.length > 85 ? `${preview.slice(0, 85)}…` : preview;
 
             return (
-              <article key={p.slug} className="note-card">
+              <article key={p.slug} className={`note-card${p.seriesId ? ' note-card-series' : ''}`}>
                 <span className="note-pin" />
                 <p className="note-meta">
-                  <span className="chip">{p.category}</span>
-                  <span className="note-topic-label">{p.topic}</span>
+                  <span className="chip">{t(p.category)}</span>
+                  <span className="note-topic-label">{t(p.topic)}</span>
                   <time dateTime={p.date}>{p.date}</time>
                 </p>
                 {p.author && <p className="note-author">{p.author}</p>}
                 <h3><a className="note-entry" href={`#/${kind}/${p.slug}`}>{p.title}</a></h3>
                 <p className="note-preview">{short}</p>
+                {p.seriesId && <p className="note-series-count">{locale === 'en' ? `${getSeriesEpisodes(p.seriesId, locale).length} video saved · Episode notes` : `收錄 ${getSeriesEpisodes(p.seriesId, locale).length} 支影片・逐集筆記`}</p>}
                 {p.sourceUrl && (
-                  <a className="note-source" href={p.sourceUrl} target="_blank" rel="noopener noreferrer" aria-label={`觀看原影片：${p.title}（另開分頁）`}>原影片 ↗</a>
+                  <a className="note-source" href={p.sourceUrl} target="_blank" rel="noopener noreferrer" aria-label={locale === 'en' ? `${p.seriesId ? 'Open playlist' : 'Watch original video'}: ${p.title} (new tab)` : `${p.seriesId ? '開啟播放清單' : '觀看原影片'}：${p.title}（另開分頁）`}>{p.seriesId ? t('播放清單 ↗') : t("原影片 ↗")}</a>
                 )}
               </article>
             );
@@ -149,7 +154,7 @@ export function PostList({ kind, full = false, query = '' }: { kind: Kind; full?
         <Wrapper>
           {['全部', ...categories].map((c) => (
             <button
-              key={c}
+              key={t(c)}
               type="button"
               role={asTabs ? 'tab' : undefined}
               aria-selected={asTabs ? c === category : undefined}
@@ -157,7 +162,7 @@ export function PostList({ kind, full = false, query = '' }: { kind: Kind; full?
               style={asTabs ? bookCategoryStyle(c) : undefined}
               onClick={() => setCategory(c)}
             >
-              {c}
+              {t(c)}
               {asTabs && (
                 <span className="tab-count">
                   {c === '全部' ? items.length : items.filter((p) => p.category === c).length}
@@ -168,12 +173,12 @@ export function PostList({ kind, full = false, query = '' }: { kind: Kind; full?
         </Wrapper>
       )}
       <ul className={asTabs ? 'links tab-panel' : 'links'}>
-        {shown.length === 0 && <li className="book-search-empty" role="status">找不到符合的書籍，試試其他關鍵字或分類</li>}
+        {shown.length === 0 && <li className="book-search-empty" role="status">{t("找不到符合的書籍，試試其他關鍵字或分類")}</li>}
         {shown.map((p) => (
           <li key={p.slug}>
             <a className="card" href={`#/${kind}/${p.slug}`}>
               <p className="post-meta">
-                {showCategories && <span className={`chip${kind === 'books' ? ' book-category-chip' : ''}`} style={kind === 'books' ? bookCategoryStyle(p.category) : undefined}>{p.category}</span>}
+                {showCategories && <span className={`chip${kind === 'books' ? ' book-category-chip' : ''}`} style={kind === 'books' ? bookCategoryStyle(p.category) : undefined}>{t(p.category)}</span>}
                 {p.author && <span className={`chip${kind === 'books' ? ' book-author-chip' : ''}`}>{p.author}</span>} {kind !== 'books' && p.date}
               </p>
               <h3>{p.title}</h3>
@@ -186,17 +191,18 @@ export function PostList({ kind, full = false, query = '' }: { kind: Kind; full?
 }
 
 export default function Posts({ kind, slug }: { kind: Kind; slug?: string }) {
+  const { t, locale } = useLanguage();
   const [bookQuery, setBookQuery] = useState('');
-  const { title, desc, items } = collections[kind];
+  const { title, desc, items } = getCollections(locale)[kind];
 
   if (slug) {
     const post = items.find((p) => p.slug === slug);
     if (!post) {
       return (
         <>
-          <p>找不到這篇 🙈</p>
+          <p>{t("找不到這篇 🙈")}</p>
           <a className="btn" href={kind === 'books' ? '#/books' : kind === 'notes' ? '#/notes' : '#/'}>
-            {kind === 'books' ? '回讀書筆記' : kind === 'notes' ? '回隨手記' : '回首頁'}
+            {kind === 'books' ? t('回讀書筆記') : kind === 'notes' ? t('回隨手記') : t('回首頁')}
           </a>
         </>
       );
@@ -204,14 +210,14 @@ export default function Posts({ kind, slug }: { kind: Kind; slug?: string }) {
     return (
       <>
         <a className="back" href={kind === 'books' ? '#/books' : kind === 'notes' ? '#/notes' : '#/'}>
-          {kind === 'books' ? '← 回讀書筆記' : kind === 'notes' ? '← 回隨手記' : '← 回首頁'}
+          {kind === 'books' ? t('← 回讀書筆記') : kind === 'notes' ? t('← 回隨手記') : t('← 回首頁')}
         </a>
         <h1 className="page-title">{post.title}</h1>
         <p className="post-meta">
           {post.author && <span className={`chip${kind === 'books' ? ' book-author-chip' : ''}`}>{post.author}</span>}
-          {post.category !== '未分類' && <span className={`chip${kind === 'books' ? ' book-category-chip' : ''}`} style={kind === 'books' ? bookCategoryStyle(post.category) : undefined}>{post.category}</span>} {kind !== 'books' && post.date}
+          {post.category !== '未分類' && <span className={`chip${kind === 'books' ? ' book-category-chip' : ''}`} style={kind === 'books' ? bookCategoryStyle(post.category) : undefined}>{t(post.category)}</span>} {kind !== 'books' && post.date}
         </p>
-        <article className={`prose${kind === 'books' ? ' book-prose' : ''}`} dangerouslySetInnerHTML={{ __html: post.html }} />
+        {kind === 'notes' && post.seriesId ? <SeriesNotes key={post.slug} post={post} /> : <article className={`prose${kind === 'books' ? ' book-prose' : ''}`} dangerouslySetInnerHTML={{ __html: post.html }} />}
       </>
     );
   }
@@ -219,8 +225,8 @@ export default function Posts({ kind, slug }: { kind: Kind; slug?: string }) {
   if (kind === 'notes') {
     return (
       <>
-        <h1 className="page-title">{title}</h1>
-        <p className="page-desc">{desc}</p>
+        <h1 className="page-title">{t(title)}</h1>
+        <p className="page-desc">{t(desc)}</p>
         <PostList kind={kind} full />
       </>
     );
@@ -228,19 +234,19 @@ export default function Posts({ kind, slug }: { kind: Kind; slug?: string }) {
 
   return (
     <>
-      <h1 className="page-title">{title}</h1>
+      <h1 className="page-title">{t(title)}</h1>
       {kind === 'books' ? (
         <div className="books-description">
-          <p className="page-desc">{desc}</p>
+          <p className="page-desc">{t(desc)}</p>
           <label className="book-search">
             <svg className="book-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true">
               <circle cx="10.5" cy="10.5" r="6.5" />
               <path d="m16 16 4.5 4.5" strokeLinecap="round" />
             </svg>
-            <input type="search" aria-label="搜尋書名或作者" placeholder="找一本書，或一位作者…" value={bookQuery} onChange={(event) => setBookQuery(event.target.value)} />
+            <input type="search" aria-label={t("搜尋書名或作者")} placeholder={t("找一本書，或一位作者…")} value={bookQuery} onChange={(event) => setBookQuery(event.target.value)} />
           </label>
         </div>
-      ) : <p className="page-desc">{desc}</p>}
+      ) : <p className="page-desc">{t(desc)}</p>}
       <PostList kind={kind} full query={kind === 'books' ? bookQuery : ''} />
     </>
   );

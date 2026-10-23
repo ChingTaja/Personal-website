@@ -1,3 +1,4 @@
+import { useLanguage } from './i18n'
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import type { Post } from './postData'
 
@@ -28,6 +29,7 @@ function Spine({ book, index }: { book: Post; index: number }) {
 
 // 書櫃維持單列，支援箭頭、觸控與滑鼠拖曳
 export default function Shelf({ books }: { books: Post[] }) {
+  const { t } = useLanguage();
   const viewport = useRef<HTMLDivElement>(null)
   const drag = useRef({ startX: 0, startScroll: 0, active: false, moved: false })
   const [canLeft, setCanLeft] = useState(false)
@@ -60,10 +62,10 @@ export default function Shelf({ books }: { books: Post[] }) {
   return (
     <div className="shelf">
       <div className="shelf-toolbar">
-        <p className="shelf-hint">👇 挑一本抽出來看看</p>
-        <div className="shelf-controls" aria-label="書櫃捲動">
-          <button type="button" disabled={!canLeft} onClick={() => scroll(-1)} aria-label="書櫃往左" aria-controls="shelf-viewport">←</button>
-          <button type="button" disabled={!canRight} onClick={() => scroll(1)} aria-label="書櫃往右" aria-controls="shelf-viewport">→</button>
+        <p className="shelf-hint">{t("👇 挑一本抽出來看看")}</p>
+        <div className="shelf-controls" aria-label={t("書櫃捲動")}>
+          <button type="button" disabled={!canLeft} onClick={() => scroll(-1)} aria-label={t("書櫃往左")} aria-controls="shelf-viewport">←</button>
+          <button type="button" disabled={!canRight} onClick={() => scroll(1)} aria-label={t("書櫃往右")} aria-controls="shelf-viewport">→</button>
         </div>
       </div>
       <div className="shelf-case">
@@ -72,7 +74,7 @@ export default function Shelf({ books }: { books: Post[] }) {
           className={`shelf-viewport${dragging ? ' dragging' : ''}`}
           ref={viewport}
           role="region"
-          aria-label="讀書筆記書櫃，可左右捲動"
+          aria-label={t("讀書筆記書櫃，可左右捲動")}
           tabIndex={0}
           onDragStart={(event) => event.preventDefault()}
           onPointerDown={(event) => {
