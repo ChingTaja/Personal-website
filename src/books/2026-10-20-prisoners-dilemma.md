@@ -2,7 +2,7 @@
 title: 囚犯的兩難
 date: 2026-10-20
 category: 賽局理論
-author: 龐士東
+author: William Poundstone
 ---
 ## 摘要
 

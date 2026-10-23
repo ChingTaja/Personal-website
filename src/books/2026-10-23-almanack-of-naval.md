@@ -2,6 +2,7 @@
 title: 納瓦爾寶典
 date: 2026-10-23
 readingDate: 2026/09
+author: Eric Jorgenson
 category: 學習思考
 ---
 

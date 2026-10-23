@@ -1,6 +1,7 @@
 ---
 title: 窮爸爸 富爸爸
 date: 2026-10-23
+author: Robert T. Kiyosaki
 category: 財務理財
 ---
 

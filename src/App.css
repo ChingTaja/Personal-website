@@ -835,3 +835,71 @@ a.card {
   background: #fff;
   color: #000;
 }
+
+.books-description {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px 24px;
+  margin-bottom: 32px;
+}
+.books-description .page-desc { margin: 0; }
+.book-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 280px;
+  max-width: 100%;
+  padding: 10px 14px;
+  background: #fffcf6;
+  border: 1px solid #d9d5ca;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px #463a2510;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.book-search:focus-within {
+  border-color: #9baea5;
+  box-shadow: 0 0 0 3px #b8e0d240;
+}
+.book-search-icon { flex: none; width: 18px; height: 18px; color: #879088; }
+.book-search input {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  padding: 0;
+  font: inherit;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink);
+  background: transparent;
+  border: 0;
+  outline: none;
+}
+.book-search input::placeholder { color: #93978e; }
+.book-search-empty { padding: 20px 0; color: var(--muted); }
+@media (max-width: 640px) {
+  .book-search { width: 100%; }
+}
+
+/* 便條紙內容分層，摘要保留原本的段落節奏 */
+.note-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 28px; }
+.note-card { padding: 28px 24px 22px; min-height: 330px; }
+.note-meta { gap: 8px; margin-bottom: 12px; font-weight: 400; }
+.note-meta .chip { margin: 0; padding: 0 8px; font-size: 11px; border-width: 1px; }
+.note-meta time { margin-left: auto; font-size: 11px; }
+.note-topic-label { font-size: 12px; color: var(--muted); }
+.note-author { margin: 0 0 16px; font-size: 12px; color: #687467; line-height: 1.7; }
+.note-card h3 { font-size: 20px; line-height: 1.65; margin-bottom: 18px; overflow-wrap: anywhere; }
+.note-card .note-preview {
+  white-space: pre-line;
+  line-height: 1.85;
+  font-size: 14px;
+  color: #6d756d;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+.note-source { top: 0; }

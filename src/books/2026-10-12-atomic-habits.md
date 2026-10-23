@@ -2,7 +2,7 @@
 title: 原子習慣
 date: 2026-10-12
 category: 習慣
-author: 詹姆斯·克利爾
+author: James Clear
 ---
 
 ## 摘要

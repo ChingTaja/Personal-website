@@ -1,6 +1,7 @@
 ---
 title: 第二大腦
 date: 2026-10-23
+author: Tiago Forte
 category: 學習思考
 ---
 

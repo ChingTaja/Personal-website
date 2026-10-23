@@ -1,6 +1,7 @@
 ---
 title: 培養感受力
 date: 2026-10-23
+author: SHOWKO
 category: 心理成長
 ---
 

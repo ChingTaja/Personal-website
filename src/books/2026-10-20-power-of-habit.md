@@ -2,7 +2,7 @@
 title: 為什麼我們這樣生活，那樣工作
 date: 2026-10-20
 category: 習慣
-author: 查爾斯·杜希格
+author: Charles Duhigg
 ---
 ## 摘要
 

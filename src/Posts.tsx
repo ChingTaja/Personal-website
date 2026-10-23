@@ -19,9 +19,12 @@ function bookCategoryStyle(category: string): CSSProperties {
 
 function stripHtml(raw: string) {
   return raw
+    .replace(/<h[1-6]\b[^>]*>[\s\S]*?<\/h[1-6]>/gi, '')
+    .replace(/<br\s*\/?>|<\/(?:p|li|tr|blockquote)>/gi, '\n')
     .replace(/<[^>]+>/g, ' ')
     .replace(/&nbsp;/g, ' ')
-    .replace(/\s+/g, ' ')
+    .replace(/[^\S\n]+/g, ' ')
+    .replace(/ *\n+ */g, '\n')
     .trim();
 }
 
@@ -78,12 +81,16 @@ function Filters({ children }: { children: ReactNode }) {
 }
 
 // full：整頁列表。讀書筆記在首頁是書櫃，整頁則是「全部 + 分類」tab 與所有筆記
-export function PostList({ kind, full = false }: { kind: Kind; full?: boolean }) {
+export function PostList({ kind, full = false, query = '' }: { kind: Kind; full?: boolean; query?: string }) {
   const [category, setCategory] = useState('全部');
   const items = collections[kind].items;
   const getCategory = (post: (typeof items)[number]) => kind === 'notes' ? post.topic : post.category;
   const categories = [...new Set(items.map(getCategory))];
-  const shown = category === '全部' ? items : items.filter((p) => getCategory(p) === category);
+  const search = query.trim().toLocaleLowerCase();
+  const shown = items.filter((post) =>
+    (category === '全部' || getCategory(post) === category) &&
+    (!search || `${post.title} ${post.author}`.toLocaleLowerCase().includes(search))
+  );
   const asTabs = kind === 'books' && full;
 
   if (kind === 'books' && !full) return <Shelf books={items} />;
@@ -109,17 +116,17 @@ export function PostList({ kind, full = false }: { kind: Kind; full?: boolean })
         <div className="note-grid">
           {shown.map((p) => {
             const preview = stripHtml(p.html);
-            const short = preview.length > 120 ? `${preview.slice(0, 120)}…` : preview;
+            const short = preview.length > 85 ? `${preview.slice(0, 85)}…` : preview;
 
             return (
               <article key={p.slug} className="note-card">
                 <span className="note-pin" />
                 <p className="note-meta">
                   <span className="chip">{p.category}</span>
-                  {p.author && <span className="chip">{p.author}</span>}
-                  {p.date}
+                  <span className="note-topic-label">{p.topic}</span>
+                  <time dateTime={p.date}>{p.date}</time>
                 </p>
-                <p className="note-topic">{p.topic}</p>
+                {p.author && <p className="note-author">{p.author}</p>}
                 <h3><a className="note-entry" href={`#/${kind}/${p.slug}`}>{p.title}</a></h3>
                 <p className="note-preview">{short}</p>
                 {p.sourceUrl && (
@@ -161,6 +168,7 @@ export function PostList({ kind, full = false }: { kind: Kind; full?: boolean })
         </Wrapper>
       )}
       <ul className={asTabs ? 'links tab-panel' : 'links'}>
+        {shown.length === 0 && <li className="book-search-empty" role="status">找不到符合的書籍，試試其他關鍵字或分類</li>}
         {shown.map((p) => (
           <li key={p.slug}>
             <a className="card" href={`#/${kind}/${p.slug}`}>
@@ -178,6 +186,7 @@ export function PostList({ kind, full = false }: { kind: Kind; full?: boolean })
 }
 
 export default function Posts({ kind, slug }: { kind: Kind; slug?: string }) {
+  const [bookQuery, setBookQuery] = useState('');
   const { title, desc, items } = collections[kind];
 
   if (slug) {
@@ -220,8 +229,19 @@ export default function Posts({ kind, slug }: { kind: Kind; slug?: string }) {
   return (
     <>
       <h1 className="page-title">{title}</h1>
-      <p className="page-desc">{desc}</p>
-      <PostList kind={kind} full />
+      {kind === 'books' ? (
+        <div className="books-description">
+          <p className="page-desc">{desc}</p>
+          <label className="book-search">
+            <svg className="book-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true">
+              <circle cx="10.5" cy="10.5" r="6.5" />
+              <path d="m16 16 4.5 4.5" strokeLinecap="round" />
+            </svg>
+            <input type="search" aria-label="搜尋書名或作者" placeholder="找一本書，或一位作者…" value={bookQuery} onChange={(event) => setBookQuery(event.target.value)} />
+          </label>
+        </div>
+      ) : <p className="page-desc">{desc}</p>}
+      <PostList kind={kind} full query={kind === 'books' ? bookQuery : ''} />
     </>
   );
 }

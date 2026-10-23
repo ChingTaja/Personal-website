@@ -2,7 +2,7 @@
 title: 點子都是偷來的
 date: 2026-10-20
 category: 創意
-author: 奧斯汀·克隆
+author: Austin Kleon
 ---
 ## 摘要
 

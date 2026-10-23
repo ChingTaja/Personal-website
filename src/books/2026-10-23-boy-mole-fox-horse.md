@@ -1,6 +1,7 @@
 ---
 title: 男孩、鼴鼠、狐狸與馬
 date: 2026-10-23
+author: Charlie Mackesy
 category: 繪本
 ---
 
