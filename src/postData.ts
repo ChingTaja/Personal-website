@@ -58,7 +58,7 @@ function parse(slug: string, raw: string): Post {
     color: meta.color ?? '',
     html: marked.parse(body, { async: false, renderer }).replace(
       '<span class="book-reading-date">閱讀日期：太久遠不可考</span>',
-      `<span class="book-reading-date">閱讀日期：${/^\d{4}\/\d{2}\/\d{2}$/.test(meta.readingDate ?? '') ? meta.readingDate : '太久遠不可考'}</span>`
+      `<span class="book-reading-date">閱讀日期：${/^\d{4}\/(0[1-9]|1[0-2])(?:\/(0[1-9]|[12]\d|3[01]))?$/.test(meta.readingDate ?? '') ? meta.readingDate : '太久遠不可考'}</span>`
     ),
   };
 }

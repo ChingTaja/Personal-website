@@ -1,6 +1,21 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import Shelf from './Shelf';
 import { collections, type Kind } from './postData';
+
+const bookCategoryColors: Record<string, string> = {
+  '全部': '#e5e8ec',
+  '學習思考': '#b9d9ef',
+  '心理成長': '#d9c5ed',
+  '習慣': '#b8dfcd',
+  '財務理財': '#f3d483',
+  '賽局理論': '#b9dfe0',
+  '創意': '#f4bdab',
+  '繪本': '#efc6dc',
+  '其他': '#ded8cd',
+};
+function bookCategoryStyle(category: string): CSSProperties {
+  return { '--category-color': bookCategoryColors[category] ?? '#ded8cd' } as CSSProperties;
+}
 
 function stripHtml(raw: string) {
   return raw
@@ -131,7 +146,8 @@ export function PostList({ kind, full = false }: { kind: Kind; full?: boolean })
               type="button"
               role={asTabs ? 'tab' : undefined}
               aria-selected={asTabs ? c === category : undefined}
-              className={`${asTabs ? 'tab' : 'filter'}${c === category ? ' active' : ''}`}
+              className={`${asTabs ? 'tab book-category-tab' : 'filter'}${c === category ? ' active' : ''}`}
+              style={asTabs ? bookCategoryStyle(c) : undefined}
               onClick={() => setCategory(c)}
             >
               {c}
@@ -149,8 +165,8 @@ export function PostList({ kind, full = false }: { kind: Kind; full?: boolean })
           <li key={p.slug}>
             <a className="card" href={`#/${kind}/${p.slug}`}>
               <p className="post-meta">
-                {showCategories && <span className="chip">{p.category}</span>}
-                {p.author && <span className="chip">{p.author}</span>} {p.date}
+                {showCategories && <span className={`chip${kind === 'books' ? ' book-category-chip' : ''}`} style={kind === 'books' ? bookCategoryStyle(p.category) : undefined}>{p.category}</span>}
+                {p.author && <span className={`chip${kind === 'books' ? ' book-author-chip' : ''}`}>{p.author}</span>} {kind !== 'books' && p.date}
               </p>
               <h3>{p.title}</h3>
             </a>
@@ -183,8 +199,8 @@ export default function Posts({ kind, slug }: { kind: Kind; slug?: string }) {
         </a>
         <h1 className="page-title">{post.title}</h1>
         <p className="post-meta">
-          {post.author && <span className="chip">{post.author}</span>}
-          {post.category !== '未分類' && <span className="chip">{post.category}</span>} {post.date}
+          {post.author && <span className={`chip${kind === 'books' ? ' book-author-chip' : ''}`}>{post.author}</span>}
+          {post.category !== '未分類' && <span className={`chip${kind === 'books' ? ' book-category-chip' : ''}`} style={kind === 'books' ? bookCategoryStyle(post.category) : undefined}>{post.category}</span>} {kind !== 'books' && post.date}
         </p>
         <article className={`prose${kind === 'books' ? ' book-prose' : ''}`} dangerouslySetInnerHTML={{ __html: post.html }} />
       </>
