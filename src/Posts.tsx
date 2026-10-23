@@ -97,7 +97,7 @@ export function PostList({ kind, full = false }: { kind: Kind; full?: boolean })
             const short = preview.length > 120 ? `${preview.slice(0, 120)}…` : preview;
 
             return (
-              <a key={p.slug} className="note-card" href={`#/${kind}/${p.slug}`}>
+              <article key={p.slug} className="note-card">
                 <span className="note-pin" />
                 <p className="note-meta">
                   <span className="chip">{p.category}</span>
@@ -105,9 +105,12 @@ export function PostList({ kind, full = false }: { kind: Kind; full?: boolean })
                   {p.date}
                 </p>
                 <p className="note-topic">{p.topic}</p>
-                <h3>{p.title}</h3>
+                <h3><a className="note-entry" href={`#/${kind}/${p.slug}`}>{p.title}</a></h3>
                 <p className="note-preview">{short}</p>
-              </a>
+                {p.sourceUrl && (
+                  <a className="note-source" href={p.sourceUrl} target="_blank" rel="noopener noreferrer" aria-label={`觀看原影片：${p.title}（另開分頁）`}>原影片 ↗</a>
+                )}
+              </article>
             );
           })}
         </div>

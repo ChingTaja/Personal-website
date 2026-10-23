@@ -2,11 +2,10 @@
 title: NSCA 睽違十年改版：增肌 3 項建議跟舊版很不一樣
 date: 2026-10-23
 category: 影片
+sourceUrl: https://www.youtube.com/watch?v=1tRQjql5cdk
 topic: 健身訓練
 author: 林勁瑋 x 大腦優先教練學院
 ---
-
-[觀看原影片 ↗](https://www.youtube.com/watch?v=1tRQjql5cdk)
 
 ## 重點
 

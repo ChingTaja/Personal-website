@@ -6,6 +6,7 @@ export type Post = {
   date: string;
   category: string;
   topic: string;
+  sourceUrl: string;
   author: string;
   color: string;
   html: string;
@@ -52,6 +53,7 @@ function parse(slug: string, raw: string): Post {
     date: meta.date ?? '',
     category: meta.category ?? '未分類',
     topic: meta.topic ?? '未分類',
+    sourceUrl: /^https?:\/\//i.test(meta.sourceUrl ?? '') ? meta.sourceUrl : '',
     author: meta.author ?? '',
     color: meta.color ?? '',
     html: marked.parse(body, { async: false, renderer }).replace(

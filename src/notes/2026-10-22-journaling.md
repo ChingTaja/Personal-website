@@ -2,11 +2,10 @@
 title: 【ジャーナリング】たった1ヶ月続けると人生が変わり始める。5つのスゴい効果と正しいやり方を解説します
 date: 2026-10-22
 category: 影片
+sourceUrl: https://www.youtube.com/watch?v=rHjw9Mxe31E
 topic: 自我管理
 author: Ryuの自己管理室
 ---
-
-[觀看原影片 ↗](https://www.youtube.com/watch?v=rHjw9Mxe31E)
 
 ## 重點
 

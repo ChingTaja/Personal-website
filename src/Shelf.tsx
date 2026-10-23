@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import type { Post } from './postData'
 
-const palette = ['#c6d3c5', '#e4d5b7', '#ccd6df', '#d9beb3', '#d1c8da', '#d6d2bf']
+const palette = ['#f08b72', '#edc34f', '#66c3b0', '#80b4e3', '#b79bda', '#e8a358']
 
 // 用 slug 算出固定的高度與寬度，每次重新整理書櫃都長一樣
 function hash(s: string) {

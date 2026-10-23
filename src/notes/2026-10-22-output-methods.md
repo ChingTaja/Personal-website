@@ -2,11 +2,10 @@
 title: 知識がみるみる定着する最強のアウトプット法３選
 date: 2026-10-22
 category: 影片
+sourceUrl: https://www.youtube.com/watch?v=d-z3RG7Mmqg
 topic: 學習方法
 author: ななえる
 ---
-
-[觀看原影片 ↗](https://www.youtube.com/watch?v=d-z3RG7Mmqg)
 
 ## 重點
 

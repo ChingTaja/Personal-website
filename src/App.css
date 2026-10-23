@@ -516,12 +516,12 @@ a.card {
   width: var(--w);
   height: var(--h);
   padding: 30px 10px 38px;
-  color: #344039;
-  font-size: 14px;
-  font-weight: 600;
+  color: #3f423e;
+  font-size: 16px;
+  font-weight: 700;
   text-decoration: none;
   background:
-    linear-gradient(90deg, #00000018, #ffffff40 7%, transparent 16%, transparent 78%, #00000012 94%, #ffffff30),
+    linear-gradient(90deg, #0000000d, #ffffff40 7%, transparent 16%, transparent 78%, #00000009 94%, #ffffff30),
     repeating-linear-gradient(0deg, #ffffff0a 0 1px, transparent 1px 3px),
     var(--c);
   border: 1px solid #4b493329;
@@ -536,11 +536,11 @@ a.card {
   writing-mode: vertical-rl;
   text-orientation: mixed;
   line-height: 1.7;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.06em;
   max-height: 100%;
   overflow-wrap: anywhere;
   margin: 0 auto;
-  font-family: 'Noto Serif TC', 'Songti TC', 'PMingLiU', serif;
+  font-family: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', system-ui, sans-serif;
 }
 
 .spine::before,
@@ -796,3 +796,27 @@ a.card {
   font-size: 12px;
   font-weight: 700;
 }
+
+/* 卡片主區讀筆記，右下角獨立連到原影片 */
+.note-entry { color: inherit; text-decoration: none; }
+.note-entry::after { content: ''; position: absolute; inset: 0; border-radius: 18px; }
+.note-entry:focus-visible { outline: none; }
+.note-card:has(.note-entry:focus-visible) { outline: 3px solid var(--ink); outline-offset: 4px; }
+.note-source {
+  position: relative;
+  z-index: 1;
+  align-self: flex-end;
+  margin-top: auto;
+  top: 8px;
+  padding: 5px 10px;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  background: #ffffff80;
+  border: 1px solid #2f3a4a40;
+  border-radius: 7px;
+}
+.note-source:hover { background: var(--accent-2); }
+.note-source:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.note-card .note-preview { margin-bottom: 16px; }
