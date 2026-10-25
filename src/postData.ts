@@ -102,7 +102,7 @@ export const collections: Record<Kind, { title: string; desc: string; items: Pos
   },
   notes: {
     title: '💡 隨手記',
-    desc: '碎片化想法、影片感想和 podcast 筆記',
+    desc: '這裡放的是一些零散的想法，還有看影片、聽 podcast 時記下的觀念。先慢慢收集起來，留著之後回頭看。',
     items: collect(
       import.meta.glob('./notes/*.md', { query: '?raw', import: 'default', eager: true }) as Record<string, string>
     ),

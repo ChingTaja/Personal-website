@@ -1,6 +1,6 @@
 import { useLanguage } from './i18n'
 import { useEffect, useRef, useState } from 'react'
-import { getResourceCategories, type ResourceLink } from './resourceData'
+import { getResourceCategories, type ResourceLink, type ResourceGroupData } from './resourceData'
 
 function ResourceCard({ resource }: { resource: ResourceLink }) {
   const content = (
@@ -15,7 +15,7 @@ function ResourceCard({ resource }: { resource: ResourceLink }) {
   ) : <article className="card">{content}</article>
 }
 
-function ResourceGroup({ group }: { group: { id: string; title: string; links: ResourceLink[] } }) {
+function ResourceGroup({ group }: { group: ResourceGroupData }) {
   const { t, locale } = useLanguage();
   const [expanded, setExpanded] = useState(false)
   const [columns, setColumns] = useState(1)
@@ -42,6 +42,7 @@ function ResourceGroup({ group }: { group: { id: string; title: string; links: R
   return (
     <section className="resource-group" id={`resource-${group.id}`} aria-labelledby={`heading-${group.id}`}>
       <h2 className="resource-heading" id={`heading-${group.id}`}>{group.title} <span className="resource-total">{locale === 'en' ? `${group.links.length} resources` : `${group.links.length} 個收藏`}</span></h2>
+      {group.desc && <p className="resource-group-desc">{group.desc}</p>}
       <ul className="links resource-grid" id={gridId} ref={gridRef}>
         {visible.map((resource) => <li key={resource.title}><ResourceCard resource={resource} /></li>)}
       </ul>
@@ -78,6 +79,19 @@ export default function Resources({ categoryId }: { categoryId?: string }) {
         <a className="back" href="#/resources">{t("← 回學習資源收藏")}</a>
         <h1 className="page-title">{category.emoji} {category.title}</h1>
         <p className="page-desc">{category.desc}</p>
+        {category.guide && (
+          <aside className="resource-guide">
+            <h2>{category.guide.title}</h2>
+            <p>{category.guide.desc}</p>
+          </aside>
+        )}
+        {category.source && (
+          <div className="resource-attribution">
+            <span>{t('整理來源')}</span>
+            <a href={category.source.url} target="_blank" rel="noopener noreferrer">{category.source.title} ↗</a>
+            <a className="resource-creator" href={category.source.authorUrl} target="_blank" rel="noopener noreferrer">{category.source.author} ↗</a>
+          </div>
+        )}
         {category.groups && (
           <nav className="resource-index" aria-label={locale === 'en' ? `${category.title} categories` : `${category.title}小類別`}>
             {groups.map((group) => (

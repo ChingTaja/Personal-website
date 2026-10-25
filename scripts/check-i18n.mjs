@@ -32,8 +32,11 @@ try {
   }
   const episodes = getSeriesEpisodes('game-theory-101', 'zh-TW')
   const englishEpisodes = getSeriesEpisodes('game-theory-101', 'en')
-  assert.equal(episodes.length, 1)
+  assert.equal(episodes.length, 3)
   assert.equal(episodes[0].status, 'draft')
+  assert.equal(episodes[1].status, 'complete')
+  assert(episodes[1].html.includes('<table>'))
+  assert(englishEpisodes[1].html.includes('(-12, 0)'))
   assert.equal(englishEpisodes[0].sourceUrl, episodes[0].sourceUrl)
   assert(englishEpisodes[0].html.includes('What is game theory?'))
   assert(!englishEpisodes[0].html.includes('Open Questions'))
@@ -51,6 +54,17 @@ try {
       assert.equal(enResources[i].links[j].url, link.url)
     })
   }
+  const ai = enResources.find((category) => category.id === 'ai')
+  assert.equal(ai.groups.length, 7)
+  assert.equal(ai.links.length, 34)
+  assert.equal(ai.source.author, 'Tina Huang')
+  assert.equal(ai.source.url, 'https://www.youtube.com/watch?v=mn0agTT8lG8')
+  assert(ai.guide.desc.includes('foundation course'))
+  assert(!/[\u3400-\u9fff]/.test(ai.guide.desc))
+  for (const group of ai.groups) {
+    assert(group.desc)
+    assert(!/[\u3400-\u9fff]/.test(group.desc), `Untranslated AI group: ${group.id}`)
+  }
   const messages = JSON.parse(await readFile('src/locales/en/ui.json', 'utf8'))
   for (const file of ['App.tsx', 'Nav.tsx', 'Posts.tsx', 'Resources.tsx', 'Shelf.tsx', 'SeriesNotes.tsx']) {
     const source = await readFile(`src/${file}`, 'utf8')
@@ -60,10 +74,16 @@ try {
   }
   for (const locale of ['zh-TW', 'en']) {
     globalThis.localStorage = { getItem: () => locale }
-    for (const hash of ['#/', '#/books', '#/notes', '#/posts', '#/resources', '#/resources/japanese', '#/resources/english', '#/books/2026-10-23-almanack-of-naval', '#/notes/2026-10-22-journaling', '#/notes/2026-10-23-game-theory-101']) {
+    for (const hash of ['#/', '#/books', '#/notes', '#/posts', '#/resources', '#/resources/japanese', '#/resources/english', '#/resources/ai', '#/books/2026-10-23-almanack-of-naval', '#/notes/2026-10-22-journaling', '#/notes/2026-10-23-game-theory-101']) {
       globalThis.window = { location: { hash } }
       const html = renderToString(React.createElement(LanguageProvider, null, React.createElement(App)))
       assert(html.includes(locale === 'en' ? 'Reading Notes' : '讀書筆記'), `${locale} ${hash}`)
+      if (hash === '#/resources/ai') {
+        assert(html.includes('Tina Huang'))
+        assert(html.includes('mn0agTT8lG8'))
+        assert(html.includes('resource-foundations'))
+        assert(html.includes('resource-machinist'))
+      }
       if (hash.endsWith('game-theory-101')) {
         assert(html.includes('William Spaniel'))
         assert(html.includes('aria-expanded="true"'))
@@ -77,7 +97,7 @@ try {
       }
     }
   }
-  console.log('i18n checks passed: all content pairs, author preservation, reading dates, resources, UI keys, series episode metadata, and 20 rendered routes.')
+  console.log('i18n checks passed: all content pairs, author preservation, reading dates, resources, UI keys, series episode metadata, AI learning routes, and 22 rendered routes.')
 } finally {
   await vite.close()
 }

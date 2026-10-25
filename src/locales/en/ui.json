@@ -54,7 +54,6 @@
   "找一本書，或一位作者…": "Find a book or an author…",
   "慢慢寫、慢慢累積的小筆記。": "Small notes, written and collected over time.",
   "全部的讀書筆記，用分類 tab 切換。": "All my reading notes. Browse by category.",
-  "碎片化想法、影片感想和 podcast 筆記": "Passing thoughts, video takeaways, and podcast notes.",
   "往左": "Scroll left",
   "往右": "Scroll right",
   "👇 挑一本抽出來看看": "👇 Pick a book from the shelf",
@@ -85,5 +84,9 @@
   "觀看這集 ↗": "Watch this video ↗",
   "找不到符合的集數": "No matching episodes found",
   "主題": "Topics",
-  "主題目錄": "Topic index"
+  "主題目錄": "Topic index",
+  "整理來源": "Based on",
+  "這裡放的是一些零散的想法，還有看影片、聽 podcast 時記下的觀念。先慢慢收集起來，留著之後回頭看。": "A place for scattered thoughts and ideas picked up from videos and podcasts. Collecting them little by little, so I can come back to them later.",
+  "文章": "Article",
+  "原文章 ↗": "Read article ↗"
 }

@@ -135,7 +135,7 @@ export function PostList({ kind, full = false, query = '' }: { kind: Kind; full?
                 <p className="note-preview">{short}</p>
                 {p.seriesId && <p className="note-series-count">{locale === 'en' ? `${getSeriesEpisodes(p.seriesId, locale).length} video saved · Episode notes` : `收錄 ${getSeriesEpisodes(p.seriesId, locale).length} 支影片・逐集筆記`}</p>}
                 {p.sourceUrl && (
-                  <a className="note-source" href={p.sourceUrl} target="_blank" rel="noopener noreferrer" aria-label={locale === 'en' ? `${p.seriesId ? 'Open playlist' : 'Watch original video'}: ${p.title} (new tab)` : `${p.seriesId ? '開啟播放清單' : '觀看原影片'}：${p.title}（另開分頁）`}>{p.seriesId ? t('播放清單 ↗') : t("原影片 ↗")}</a>
+                  <a className="note-source" href={p.sourceUrl} target="_blank" rel="noopener noreferrer" aria-label={locale === 'en' ? `${p.seriesId ? 'Open playlist' : p.category === '文章' ? 'Read original article' : 'Watch original video'}: ${p.title} (new tab)` : `${p.seriesId ? '開啟播放清單' : p.category === '文章' ? '閱讀原文章' : '觀看原影片'}：${p.title}（另開分頁）`}>{p.seriesId ? t('播放清單 ↗') : p.category === '文章' ? t('原文章 ↗') : t("原影片 ↗")}</a>
                 )}
               </article>
             );

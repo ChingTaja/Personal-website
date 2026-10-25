@@ -55,7 +55,7 @@ export default function SeriesNotes({ post }: { post: Post }) {
               <h3 className="series-episode-heading">
                 <button type="button" className="series-episode-toggle" aria-expanded={isOpen} aria-controls={panelId} onClick={() => setExpanded((current) => isOpen ? current.filter((slug) => slug !== episode.slug) : [...current, episode.slug])}>
                   <span className="series-episode-number">{String(number).padStart(2, '0')}</span>
-                  <span className="series-episode-name">{episode.title}{episode.status === 'complete' && <span className="series-episode-status">{t('心得已整理')}</span>}</span>
+                  <span className="series-episode-name">{episode.title}</span>
                   <span className="series-chevron" aria-hidden="true">⌄</span>
                 </button>
               </h3>

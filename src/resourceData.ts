@@ -1,5 +1,8 @@
 import { translate, type Locale } from './i18n'
+import { aiCategory } from './aiResourceData'
 export type ResourceLink = { title: string; url?: string; desc: string; note?: string }
+
+export type ResourceGroupData = { id: string; title: string; desc?: string; links: ResourceLink[] }
 
 export type ResourceCategory = {
   id: string
@@ -7,12 +10,14 @@ export type ResourceCategory = {
   title: string
   desc: string
   links: ResourceLink[]
-  groups?: { id: string; title: string; links: ResourceLink[] }[]
+  groups?: ResourceGroupData[]
+  source?: { title: string; author: string; url: string; authorUrl: string }
+  guide?: { title: string; desc: string }
 }
 
 const japaneseGroups: NonNullable<ResourceCategory['groups']> = [
   { id: "reading", title: "📖 閱讀", links: [
-    {"title": "note｜健康主題", "desc": "從感興趣的生活主題開始閱讀，練習理解日本人日常文章的用字與語氣。", "url": "https://note.com/topic/health"},
+    {"title": "note", "desc": "可以把 note 想成日文版的 Medium，透過創作者分享的生活經驗與觀點，接觸自然的日文表達。", "url": "https://note.com/"},
     {"title": "日文電子書平台比較", "desc": "購書前可先比較平台特色，幫自己找到合適的原文書閱讀方式。", "url": "https://readerjenny.com/sharing/japanese-ebook-platforms-recommendation/", "note": "先把既有的書看完再說"},
   ] },
   { id: "listening", title: "🎧 聽力與會話", links: [
@@ -101,6 +106,81 @@ const englishGroups: NonNullable<ResourceCategory['groups']> = [
   ] },
 ]
 
+const additionalCategories: ResourceCategory[] = [
+  {
+    id: 'growth-and-business',
+    emoji: '🌿',
+    title: '自我成長與創業',
+    desc: '從個人觀點、內容創作到網路事業，探索適合自己的生活與工作方式。',
+    links: [],
+    groups: [{
+      id: 'creators-and-solo-business',
+      title: '✍️ 內容創作與一人事業',
+      links: [{
+        title: 'Dan Koe',
+        url: 'https://thedankoe.com/',
+        desc: '從自我成長、寫作與一人事業的文章出發，思考如何把自己的興趣與觀點轉化成內容和工作方向。',
+      }],
+    }],
+  },
+  {
+    id: 'software',
+    emoji: '💻',
+    title: '軟體開發',
+    desc: '整理程式設計與軟體架構資源，從理解問題到選擇適合的設計方法。',
+    links: [],
+    groups: [{
+      id: 'design-patterns',
+      title: '🧩 設計模式',
+      links: [{
+        title: 'Refactoring.Guru｜Design Patterns',
+        url: 'https://refactoring.guru/design-patterns',
+        desc: '把常見的軟體設計問題與模式集中整理，方便對照自己遇到的情境，理解何時適合使用哪一種解法。',
+      }],
+    }, {
+      id: 'asking-and-communication',
+      title: '💬 提問與溝通',
+      links: [{
+        title: 'How-To-Ask-Questions-The-Smart-Way｜提問的智慧',
+        url: 'https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way',
+        desc: '學習在提問前整理背景、描述問題與列出已嘗試的方法，讓技術討論更清楚，也更容易獲得有用的回答。',
+      }],
+    }],
+  },
+  {
+    id: 'interesting-websites',
+    emoji: '🎲',
+    title: '有趣的網站',
+    desc: '收藏讓人想點開玩玩、順便發現新知識的網站。',
+    links: [],
+    groups: [{
+      id: 'everyday-and-fun',
+      title: '🎮 生活與趣味',
+      links: [{
+        title: 'iTaigi 愛台語｜寶可夢',
+        url: 'https://itaigi.tw/tsu-te/pho-khi-bong',
+        desc: '從寶可夢這個熟悉的題材查台語說法，讓學詞彙多一點趣味，也順便探索其他生活用語。',
+      }],
+    }],
+  },
+  {
+    id: 'thinking',
+    emoji: '🧠',
+    title: '思考工具',
+    desc: '認識思考習慣與判斷盲點，練習從不同角度理解自己做出的選擇。',
+    links: [],
+    groups: [{
+      id: 'cognitive-biases',
+      title: '🔍 認知偏誤',
+      links: [{
+        title: 'Cognitive Bias Explorer',
+        url: 'https://thebiasmap.com/',
+        desc: '用互動地圖探索 188 項偏誤與相關效應，搭配短動畫、實驗與測驗，練習辨認日常判斷中容易忽略的盲點。',
+      }],
+    }],
+  },
+].map((category) => ({ ...category, links: category.groups.flatMap((group) => group.links) }))
+
 export const categories: ResourceCategory[] = [
   {
     id: 'english',
@@ -118,6 +198,8 @@ export const categories: ResourceCategory[] = [
     links: japaneseGroups.flatMap((group) => group.links),
     groups: japaneseGroups,
   },
+  aiCategory,
+  ...additionalCategories,
 ]
 
 export function getResourceCategories(locale: Locale): ResourceCategory[] {
@@ -132,6 +214,7 @@ export function getResourceCategories(locale: Locale): ResourceCategory[] {
     title: translate(category.title, locale),
     desc: translate(category.desc, locale),
     links: category.links.map(localizeLink),
-    groups: category.groups?.map((group) => ({ ...group, title: translate(group.title, locale), links: group.links.map(localizeLink) })),
+    guide: category.guide ? { title: translate(category.guide.title, locale), desc: translate(category.guide.desc, locale) } : undefined,
+    groups: category.groups?.map((group) => ({ ...group, title: translate(group.title, locale), desc: group.desc ? translate(group.desc, locale) : undefined, links: group.links.map(localizeLink) })),
   }));
 }
