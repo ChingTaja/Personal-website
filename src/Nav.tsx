@@ -3,7 +3,7 @@ export default function Nav({ page }: { page?: string }) {
   const { t, locale, setLocale } = useLanguage();
   const items = [
     { href: '#/', label: '🏠 首頁', active: !['posts', 'books', 'notes', 'resources'].includes(page ?? '') },
-    { href: '#/posts', label: '📝 文章', active: page === 'posts' },
+    { href: '#/posts', label: '📝 日誌', active: page === 'posts' },
     { href: '#/books', label: '📖 讀書筆記', active: page === 'books' },
     { href: '#/notes', label: '💡 隨手記', active: page === 'notes' },
     { href: '#/resources', label: '📚 學習資源收藏', active: page === 'resources' },

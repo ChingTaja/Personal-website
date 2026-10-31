@@ -4,6 +4,7 @@ import './App.css'
 import Nav from './Nav'
 import Posts, { PostList } from './Posts'
 import Resources from './Resources'
+import RamenNotes from './RamenNotes'
 import { getResourceCategories } from './resourceData'
 
 const projects = [
@@ -29,13 +30,10 @@ function Home() {
             {t("喜歡把事情做得簡單又好玩。")}
           </h1>
           <div className="intro">
-            <p>{t("這是一個慢慢寫、慢慢累積的小角落")}</p>
-            <p>
-            {t("現在有 AI 可以幫忙生成文字，讓表達變得方便許多")}
-              <br />
-            {t("不過，我還是想自己敲鍵盤、自己組織句子，把腦袋裡那些還不太完整的想法慢慢寫出來")}
-            </p>
-            <p>{t("不為了寫得多好，只是想保留書寫的習慣，也留下一些回憶給未來的自己回味")}</p>
+            <p>{t("這是一個可以慢慢寫、慢慢累積的小角落")}</p>
+            <p>{t("在文字可以輕易被生成的時代，即使有工具能夠代替我完成文字，我仍然想親自經歷思考、整理和書寫的過程。")}</p>
+            <p>{t("有些想法可能還不完整，有些句子也不一定寫得很好，但我想試著把腦海中零散的思緒，慢慢整理成自己的文字。")}</p>
+            <p>{t("不為了寫得多好，只是想保留書寫的習慣，記錄生活、整理想法，也為未來的自己留下一些值得回味的片段。")}</p>
           </div>
           <a className="btn" href="#/notes">
             {t("看看隨手記 ✍️")}
@@ -54,7 +52,7 @@ function Home() {
       </header>
 
       <h2 className="section-title" id="posts">
-            {t("📝 文章")}
+            {t("📝 日誌")}
       </h2>
       <PostList kind="posts" />
 
@@ -86,6 +84,8 @@ function Home() {
             {t("看全部收藏 📚")}
         </a>
       </p>
+
+      <RamenNotes />
 
       <h2 className="section-title" id="projects">
             {t("作品")}

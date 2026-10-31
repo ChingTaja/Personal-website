@@ -87,7 +87,7 @@ export type Kind = 'posts' | 'books' | 'notes';
 
 export const collections: Record<Kind, { title: string; desc: string; items: Post[] }> = {
   posts: {
-    title: '📝 文章',
+    title: '📝 日誌',
     desc: '慢慢寫、慢慢累積的小筆記。',
     items: collect(
       import.meta.glob('./posts/*.md', { query: '?raw', import: 'default', eager: true }) as Record<string, string>

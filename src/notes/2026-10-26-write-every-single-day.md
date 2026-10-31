@@ -2,7 +2,7 @@
 title: How to write every single day (even if you have no ideas)
 date: 2026-10-26
 category: 影片
-topic: 學習方法
+topic: 寫作
 author: Josh Czuba
 authorUrl: https://www.youtube.com/@joshczuba
 sourceUrl: https://www.youtube.com/watch?v=TIh-Ly7hxAg
