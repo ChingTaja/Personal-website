@@ -2,11 +2,13 @@
 title: 書名
 date: 2026-01-01
 category: 分類名稱
+status: draft
 author: 作者
 color: #ffb4a2
 ---
 <!--
 使用方式：
+未完成時保留 status: draft（顯示「筆記難產中」，不出現在首頁）；完成後改為 status: complete
 1. 複製這個檔案到 src/books/，檔名取成「日期-英文簡稱.md」，例如 2026-11-02-deep-work.md
 2. 修改最上面的 title / date / category / author；外國作者填原文姓名
 3. color 是書背顏色，可以刪掉（會自動輪流上色）；category 相同的書會歸在同一個 tab

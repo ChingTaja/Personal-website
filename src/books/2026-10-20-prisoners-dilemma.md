@@ -1,4 +1,5 @@
 ---
+status: draft
 title: 囚犯的兩難
 date: 2026-10-20
 category: 賽局理論

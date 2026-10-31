@@ -10,10 +10,14 @@ const reviews = Object.entries(
   const photo = document.querySelector('img')
   const image = photo?.getAttribute('src') ?? ''
   const alt = photo?.getAttribute('alt') ?? ''
+  const detailPhoto = document.querySelector('img[data-detail-photo]')
+  const detailImage = detailPhoto?.getAttribute('src') ?? image
+  const detailAlt = detailPhoto?.getAttribute('alt') ?? alt
   const name = title?.textContent ?? path.split('/').pop()?.replace(/\.md$/, '') ?? ''
   title?.remove()
   photo?.remove()
-  return { path, name, image, alt, html: document.body.innerHTML }
+  detailPhoto?.remove()
+  return { path, name, image, alt, detailImage, detailAlt, html: document.body.innerHTML }
 })
 
 export default function RamenNotes() {
@@ -47,7 +51,7 @@ export default function RamenNotes() {
       <dialog ref={dialog} className="ramen-dialog" aria-labelledby="ramen-dialog-title" onClose={() => setSelected(null)} onClick={event => { if (event.target === event.currentTarget) dialog.current?.close() }}>
         {selected && <div className="ramen-post">
           <button type="button" className="ramen-close" onClick={() => dialog.current?.close()} aria-label={english ? 'Close' : '關閉'}>×</button>
-          {selected.image && <img className="ramen-post-photo" src={selected.image} alt={selected.alt} />}
+          {selected.detailImage && <img className="ramen-post-photo" src={selected.detailImage} alt={selected.detailAlt} />}
           <div className="ramen-post-caption"><h2 id="ramen-dialog-title">{selected.name}</h2><div className="prose" dangerouslySetInnerHTML={{ __html: selected.html }} /></div>
         </div>}
       </dialog>

@@ -97,7 +97,23 @@ export function PostList({ kind, full = false, query = '' }: { kind: Kind; full?
   );
   const asTabs = kind === 'books' && full;
 
-  if (kind === 'books' && !full) return <Shelf books={items} />;
+  if (kind === 'books' && !full) return <Shelf books={items.filter((book) => book.status !== 'draft')} />;
+
+  if (kind === 'posts') {
+    // Dates remain in Markdown metadata for sorting, but are hidden in the journal UI.
+    return (
+      <ul className="journal-list">
+        {shown.map((post) => (
+          <li key={post.slug}>
+            <a className="card journal-entry" href={`#/posts/${post.slug}`}>
+              <h3>{post.title}</h3>
+              <p>{stripHtml(post.html).replace(/\n/g, ' ').slice(0, 120)}{stripHtml(post.html).length > 120 ? '…' : ''}</p>
+            </a>
+          </li>
+        ))}
+      </ul>
+    );
+  }
 
   if (kind === 'notes') {
     return (
@@ -182,6 +198,7 @@ export function PostList({ kind, full = false, query = '' }: { kind: Kind; full?
                 {p.author && <span className={`chip${kind === 'books' ? ' book-author-chip' : ''}`}>{p.author}</span>} {kind !== 'books' && p.date}
               </p>
               <h3>{p.title}</h3>
+              {kind === 'books' && p.status === 'draft' && <span className="chip book-draft-label"><span className="book-draft-icon" aria-hidden="true">!</span>{t('筆記難產中')}</span>}
             </a>
           </li>
         ))}
@@ -213,9 +230,10 @@ export default function Posts({ kind, slug }: { kind: Kind; slug?: string }) {
           {kind === 'books' ? t('← 回讀書筆記') : kind === 'notes' ? t('← 回隨手記') : t('← 回首頁')}
         </a>
         <h1 className="page-title">{post.title}</h1>
+        {kind === 'books' && post.status === 'draft' && <p><span className="chip book-draft-label"><span className="book-draft-icon" aria-hidden="true">!</span>{t('筆記難產中')}</span></p>}
         <p className="post-meta">
           {post.author && <span className={`chip${kind === 'books' ? ' book-author-chip' : ''}`}>{post.author}</span>}
-          {post.category !== '未分類' && <span className={`chip${kind === 'books' ? ' book-category-chip' : ''}`} style={kind === 'books' ? bookCategoryStyle(post.category) : undefined}>{t(post.category)}</span>} {kind !== 'books' && post.date}
+          {post.category !== '未分類' && <span className={`chip${kind === 'books' ? ' book-category-chip' : ''}`} style={kind === 'books' ? bookCategoryStyle(post.category) : undefined}>{t(post.category)}</span>} {kind === 'notes' && post.date}
         </p>
         {kind === 'notes' && post.seriesId ? <SeriesNotes key={post.slug} post={post} /> : <article className={`prose${kind === 'books' ? ' book-prose' : ''}`} dangerouslySetInnerHTML={{ __html: post.html }} />}
       </>

@@ -46,6 +46,76 @@
 }
 @media (prefers-reduced-motion: reduce) { .ramen-tile img { transition: none; } }
 
+.chip.book-draft-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  background: #fff0e6;
+  color: #a82e12;
+  border: 2px solid #d84920;
+  border-radius: 6px;
+  box-shadow: 2px 2px 0 #f7b39b;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.5;
+}
+
+.book-draft-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #a82e12;
+  color: white;
+  font-size: 11px;
+  line-height: 1;
+}
+
+.journal-list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 18px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.journal-list > li {
+  min-width: 0;
+}
+
+.journal-entry {
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.journal-entry h3 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.journal-entry p {
+  margin: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 14px;
+  line-height: 1.7;
+  opacity: .7;
+}
+
+.journal-entry:hover h3 {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
 .page {
   max-width: 1020px;
   margin: 0 auto;
@@ -200,6 +270,15 @@
   transition: transform 0.3s;
 }
 
+.avatar > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: inherit;
+  background: transparent;
+}
+
 .avatar:hover {
   transform: rotate(-6deg) scale(1.04);
 }
@@ -280,6 +359,10 @@ footer {
 }
 
 @media (max-width: 640px) {
+  .card.journal-entry {
+    transform: none;
+  }
+
   .page {
     padding-inline: 24px;
   }
