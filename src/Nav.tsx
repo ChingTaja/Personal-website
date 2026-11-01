@@ -23,10 +23,15 @@ export default function Nav({ page }: { page?: string }) {
           </li>
         ))}
       </ul>
-      <div className="language-switch" role="group" aria-label="Language / 語言">
-        <button type="button" lang="zh-TW" aria-pressed={locale === 'zh-TW'} onClick={() => setLocale('zh-TW')}>繁中</button>
-        <button type="button" lang="en" aria-pressed={locale === 'en'} onClick={() => setLocale('en')}>EN</button>
-      </div>
+      <button
+        type="button"
+        className="language-switch"
+        aria-label={locale === 'zh-TW' ? 'Switch to English' : '切換為繁體中文'}
+        onClick={() => setLocale(locale === 'zh-TW' ? 'en' : 'zh-TW')}
+      >
+        <span lang="zh-TW" className={locale === 'zh-TW' ? 'selected' : undefined}>繁中</span>
+        <span lang="en" className={locale === 'en' ? 'selected' : undefined}>EN</span>
+      </button>
     </nav>
   );
 }
