@@ -177,6 +177,22 @@ const additionalCategories: ResourceCategory[] = [
     }],
   },
   {
+    id: 'security',
+    emoji: '🛡️',
+    title: '資訊安全',
+    desc: '從網站安全觀念到實作練習，逐步累積辨識漏洞與理解防護方式的能力。',
+    links: [],
+    groups: [{
+      id: 'web-security',
+      title: '🌐 網站安全',
+      links: [{
+        title: 'PortSwigger Web Security Academy',
+        url: 'https://portswigger.net/web-security',
+        desc: '免費的網站安全學習平台，結合漏洞解說與互動實驗室，透過實作學習 SQL Injection、XSS 等常見安全議題。',
+      }],
+    }],
+  },
+  {
     id: 'thinking',
     emoji: '🧠',
     title: '思考工具',
@@ -216,18 +232,20 @@ export const categories: ResourceCategory[] = [
 ]
 
 export function getResourceCategories(locale: Locale): ResourceCategory[] {
+  const localizeDescription = (description: string): string =>
+    translate(description, locale).replace(/。/g, '').replace(/\.$/, '');
   const localizeLink = (link: ResourceLink): ResourceLink => ({
     ...link,
     title: translate(link.title, locale),
-    desc: translate(link.desc, locale),
+    desc: localizeDescription(link.desc),
     note: link.note ? translate(link.note, locale) : undefined,
   });
   return categories.map((category) => ({
     ...category,
     title: translate(category.title, locale),
-    desc: translate(category.desc, locale),
+    desc: localizeDescription(category.desc),
     links: category.links.map(localizeLink),
-    guide: category.guide ? { title: translate(category.guide.title, locale), desc: translate(category.guide.desc, locale) } : undefined,
-    groups: category.groups?.map((group) => ({ ...group, title: translate(group.title, locale), desc: group.desc ? translate(group.desc, locale) : undefined, links: group.links.map(localizeLink) })),
+    guide: category.guide ? { title: translate(category.guide.title, locale), desc: localizeDescription(category.guide.desc) } : undefined,
+    groups: category.groups?.map((group) => ({ ...group, title: translate(group.title, locale), desc: group.desc ? localizeDescription(group.desc) : undefined, links: group.links.map(localizeLink) })),
   }));
 }
