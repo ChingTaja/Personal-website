@@ -6,6 +6,10 @@ const reviews = Object.entries(
   import.meta.glob('./ramen/*.md', { query: '?raw', import: 'default', eager: true }) as Record<string, string>,
 ).sort(([a], [b]) => b.localeCompare(a)).map(([path, markdown]) => {
   const document = new DOMParser().parseFromString(marked.parse(markdown, { async: false }), 'text/html')
+  document.querySelectorAll('img').forEach((img) => {
+    const src = img.getAttribute('src')
+    if (src?.startsWith('/') && !src.startsWith('//')) img.setAttribute('src', `${import.meta.env.BASE_URL}${src.slice(1)}`)
+  })
   const title = document.querySelector('h1, h2, h3')
   const photo = document.querySelector('img')
   const image = photo?.getAttribute('src') ?? ''

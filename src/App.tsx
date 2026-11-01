@@ -16,7 +16,7 @@ function Home() {
         <div>
           <div className="hello-row">
             <p className="hello">{t("自由を買うため 今日も働いて")}</p>
-            <img className="hello-icon" src="/office.png" alt="" />
+            <img className="hello-icon" src={`${import.meta.env.BASE_URL}office.png`} alt="" />
           </div>
           <h1>
             {t("我是 ")}<span className="mark">Taja</span>{t("，")}
@@ -41,7 +41,7 @@ function Home() {
         </div>
         <div className="avatar" aria-hidden="true">
           <span className="tape" />
-          <img src="/avatar-transparent.png" alt="" />
+          <img src={`${import.meta.env.BASE_URL}avatar-transparent.png`} alt="" />
         </div>
       </header>
 
@@ -92,8 +92,8 @@ function Home() {
       <h2 className="section-title" id="contact">
             {t("聯絡")}
       </h2>
-      <a className="btn" href="mailto:tsungwu@johnsonfitness.com">
-            {t("寄信給我 ✉️")}
+      <a className="btn" href="mailto:taja526526@gmail.com">
+        <span aria-hidden="true">✉️</span> taja526526@gmail.com
       </a>
     </>
   );

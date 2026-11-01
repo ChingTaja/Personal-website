@@ -69,7 +69,7 @@ function parse(slug: string, raw: string): Post {
     status: meta.status ?? '',
     author: meta.author ?? '',
     color: meta.color ?? '',
-    html: marked.parse(body, { async: false, renderer }).replace(
+    html: marked.parse(body, { async: false, renderer }).replace(/(<img\b[^>]*\bsrc=")\/(?!\/)/gi, `$1${import.meta.env.BASE_URL}`).replace(
       '<span class="book-reading-date">閱讀日期：太久遠不可考</span>',
       `<span class="book-reading-date">閱讀日期：${/^\d{4}\/(0[1-9]|1[0-2])(?:\/(0[1-9]|[12]\d|3[01]))?$/.test(meta.readingDate ?? '') ? meta.readingDate : '太久遠不可考'}</span>`
     ),

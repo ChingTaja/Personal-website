@@ -145,6 +145,19 @@ const additionalCategories: ResourceCategory[] = [
         url: 'https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way',
         desc: '學習在提問前整理背景、描述問題與列出已嘗試的方法，讓技術討論更清楚，也更容易獲得有用的回答。',
       }],
+    }, {
+      id: 'linux',
+      title: '🐧 Linux 學習',
+      links: [{
+        title: 'turnoff.us｜看漫畫學 Linux',
+        url: 'https://turnoff.us/',
+        desc: '透過漫畫接觸 Linux 與程式開發相關題材，讓學習多一點趣味。',
+      }, {
+        title: '鳥哥的 Linux 私房菜｜基礎學習篇（第三版）',
+        url: 'https://play.google.com/store/books/details/鳥哥_鳥哥的Linux私房菜_基礎學習篇_第三版_電子書?id=93-KBAAAQBAJ',
+        desc: '收藏《鳥哥的 Linux 私房菜》基礎學習篇電子書，作為 Linux 入門與複習的閱讀資源。',
+        note: 'Google Play 圖書｜電子書',
+      }],
     }],
   },
   {
