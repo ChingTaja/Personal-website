@@ -572,13 +572,63 @@ a.card {
 }
 
 .prose {
+  min-width: 0;
   max-width: 100%;
   padding: 32px 40px;
   font-size: 17px;
+  line-height: 1.85;
+  overflow-wrap: anywhere;
   background: var(--paper);
   border: 2px solid var(--line);
   border-radius: 14px;
   box-shadow: 4px 4px 0 var(--line);
+}
+
+.prose :is(h1, h2, h3, h4, h5, h6) {
+  margin: 1.8em 0 0.7em;
+  line-height: 1.5;
+}
+
+.prose h1 { font-size: 1.8em; }
+.prose h2 { font-size: 1.5em; }
+.prose h3 { font-size: 1.25em; }
+.prose h4 { font-size: 1.1em; }
+.prose :is(h5, h6) { font-size: 1em; }
+.prose p { margin: 1em 0; }
+.prose :is(ul, ol) { padding-inline-start: 1.6em; }
+.prose li + li { margin-top: 0.4em; }
+.prose li > :is(ul, ol) { margin-block: 0.4em; }
+
+.prose hr {
+  margin: 2em 0;
+  border: 0;
+  border-top: 1px solid var(--grid);
+}
+
+.prose pre {
+  max-width: 100%;
+  overflow-x: auto;
+  padding: 18px 20px;
+  background: #f1eddf;
+  border: 1px solid var(--grid);
+  border-radius: 8px;
+  font-size: 0.85em;
+  line-height: 1.7;
+  overflow-wrap: normal;
+  tab-size: 2;
+}
+
+.prose pre code {
+  padding: 0;
+  background: none;
+  border-radius: 0;
+}
+
+@media (max-width: 600px) {
+  .prose {
+    padding: 22px 18px;
+    font-size: 16px;
+  }
 }
 
 .prose > :first-child {
@@ -610,6 +660,15 @@ a.card {
 
 .prose img {
   max-width: 100%;
+}
+
+.prose mark {
+  padding: 0 0.18em 0.05em;
+  color: inherit;
+  background: linear-gradient(178deg, transparent 36%, var(--accent-2) 39%, var(--accent-2) 88%, transparent 92%);
+  border-radius: 0.2em 0.12em 0.24em 0.1em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
 }
 
 /* 書櫃：淺木層板與布面精裝書 */

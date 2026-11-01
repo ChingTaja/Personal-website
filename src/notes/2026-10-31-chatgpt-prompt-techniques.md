@@ -12,7 +12,7 @@ sourceUrl: https://learnaitoprofit.com/99-of-users-dont-know-about-these-10-chat
 
 **簡單解釋**
 
-用途：用非常簡單的方式解釋複雜概念，就像向五歲小孩解釋一樣。
+用途：用非常簡單的方式解釋複雜概念，就像向五歲小孩解釋一樣
 
 Prompt：
 
@@ -30,7 +30,7 @@ ELI5: Explain how a database index works.
 
 **快速摘要**
 
-用途：將大量文字濃縮成精簡的重點。
+用途：將大量文字濃縮成精簡的重點
 
 Prompt：
 
@@ -50,7 +50,7 @@ Summarize the following article into
 
 **專業化表達**
 
-用途：將一般文字轉換成更專業的商業或技術用語。
+用途：將一般文字轉換成更專業的商業或技術用語
 
 Prompt：
 
@@ -66,13 +66,13 @@ Make it sound professional and polished.
 - 商業簡報
 - 技術文件
 
-注意：專業用語應該符合實際情境，不是單純增加艱深單字。
+注意：專業用語應該符合實際情境，不是單純增加艱深單字
 
 ### 4. Humanize — Remove AI Voice
 
 **自然化表達**
 
-用途：讓 AI 生成的文字更自然，減少制式、機械化的語氣。
+用途：讓 AI 生成的文字更自然，減少制式、機械化的語氣
 
 Prompt：
 
@@ -93,14 +93,14 @@ and less robotic.
 
 **深度學習**
 
-用途：透過「教別人」的方式，確認自己是否真正理解一個概念。
+用途：透過「教別人」的方式，確認自己是否真正理解一個概念
 
 四個步驟：
 
-1. Choose a concept：選擇一個想學習的概念。
-2. Teach it simply：嘗試用簡單的語言解釋。
-3. Identify knowledge gaps：找出自己不理解的地方。
-4. Simplify and review：重新整理並簡化說明。
+1. Choose a concept：選擇一個想學習的概念
+2. Teach it simply：嘗試用簡單的語言解釋
+3. Identify knowledge gaps：找出自己不理解的地方
+4. Simplify and review：重新整理並簡化說明
 
 Prompt：
 
@@ -123,7 +123,7 @@ to improve my explanation.
 
 **互動式學習**
 
-用途：不直接提供答案，而是透過提問引導自己思考。
+用途：不直接提供答案，而是透過提問引導自己思考
 
 Prompt：
 
@@ -153,7 +153,7 @@ Guide me to discover the answer through questions.
 
 **模仿風格**
 
-用途：指定某種人物、角色或平台的表達風格，改寫內容。
+用途：指定某種人物、角色或平台的表達風格，改寫內容
 
 Prompt：
 
@@ -177,13 +177,13 @@ and suitable for Reddit.
 - 調整文章語氣
 - 練習不同寫作風格
 
-註：模仿特定人物時，也可以改用描述其風格特徵的方式。
+註：模仿特定人物時，也可以改用描述其風格特徵的方式
 
 ### 8. Inverse Prompt — 反向提示詞工程
 
 **逆向分析**
 
-用途：提供一段喜歡的 AI 生成內容，反向推測可能使用了什麼 Prompt。
+用途：提供一段喜歡的 AI 生成內容，反向推測可能使用了什麼 Prompt
 
 Prompt：
 
@@ -202,13 +202,13 @@ tone, style, and level of detail.
 - 建立自己的 Prompt Template
 - 研究優秀的 AI 回答
 
-注意：反向推測只能得到可能有效的 Prompt，不代表能還原原始提示詞。
+注意：反向推測只能得到可能有效的 Prompt，不代表能還原原始提示詞
 
 ### 9. Temperature Control — 創意程度控制
 
 **控制生成風格**
 
-用途：控制 AI 回答的創意程度與隨機性。
+用途：控制 AI 回答的創意程度與隨機性
 
 文章將它分成：
 
@@ -232,13 +232,13 @@ Generate unconventional ideas and explore
 multiple possibilities.
 ```
 
-補充：Temperature 是模型生成參數，通常需要透過 API 或支援該參數的平台設定。單純在 ChatGPT 對話中要求 High Temperature，並不代表真的修改了模型參數。
+補充：Temperature 是模型生成參數，通常需要透過 API 或支援該參數的平台設定單純在 ChatGPT 對話中要求 High Temperature，並不代表真的修改了模型參數
 
 ### 10. Self-Critique — 自我批判與修正
 
 **改善回答品質**
 
-用途：要求 AI 檢查自己的回答，並進行第二次優化。
+用途：要求 AI 檢查自己的回答，並進行第二次優化
 
 Prompt：
 
@@ -279,27 +279,27 @@ Then provide an improved version.
 
 ### 01 Socratic Method
 
-先讓自己思考，再讓 AI 引導，而不是直接索取答案。
+先讓自己思考，再讓 AI 引導，而不是直接索取答案
 
 ### 02 Feynman Technique
 
-透過解釋知識，確認自己是否真的理解。
+透過解釋知識，確認自己是否真的理解
 
 ### 03 ELI5
 
-遇到不熟悉的技術，先建立簡單的概念模型。
+遇到不熟悉的技術，先建立簡單的概念模型
 
 ### 04 Self-Critique
 
-讓 AI 檢查自己的成果，找出盲點。
+讓 AI 檢查自己的成果，找出盲點
 
 ### 05 Inverse Prompt
 
-分析好的內容，學習如何設計更好的 Prompt。
+分析好的內容，學習如何設計更好的 Prompt
 
 ## 四、額外補充：一個可以直接使用的萬用 Prompt
 
-這個 Prompt 把「引導思考、分階段教學、自我檢查」結合在一起。
+這個 Prompt 把「引導思考、分階段教學、自我檢查」結合在一起
 
 ```text
 Act as my personal learning coach.
